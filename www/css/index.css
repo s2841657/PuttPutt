@@ -1,0 +1,255 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+    background-image: url(../img/paper.jpg);
+    background-size: cover;
+    font-family:'Open Sans', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    width:100%;
+}
+
+/* Portrait layout (default) */
+.app {
+    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    position:absolute;             /* position in the center of the screen */
+    left:50%;
+    top:50%;
+    height:50px;                   /* text area height */
+    width:225px;                   /* text area width */
+    text-align:center;
+    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+                                   /* offset horizontal: half of text area width */
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+        background-position:left center;
+        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+                                      /* offset horizontal: half of image width and text area width */
+    }
+}
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+label {
+    color: black;
+}
+
+.mytext {
+    width: 300px;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+
+
+
+
+
+
+
+
+
+/* GENERAL */
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    text-shadow: none !important;
+    text-decoration: none !important;
+}
+
+.ui-page {
+    background-image: url(../img/paper.jpg);
+    background-size: cover;
+}
+a.ui-btn, .ui-btn.ui-btn-b, .ui-btn.ui-btn-a {
+    text-shadow: none;
+    border: none;
+    font-family:'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+#homeLogo {
+    width: auto;
+    height: 30vh;
+    margin: 15vh auto;
+    text-align: center;
+    display: block;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+.container2 {
+    width: 30%;
+    margin: 0 auto;
+}
+
+
+#homePage, #setupPage1, #setupPage2, #settingsPage, #contactUs, #leaderboardsPage {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.clear {
+    clear: both;
+}
+
+.ui-header {
+    font-family: Damion, cursive;
+    text-align: center;
+    font-size: 3em;
+    font-weight: normal;
+    padding-top: 15px;
+}
+
+table {
+    color: black;
+    margin-left:auto; 
+    margin-right:auto;
+    
+}
+
+img {
+    width: 60%;
+    display: block;
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+.ui-icon-home {
+    position: absolute;
+    padding: 10px;
+    top: 5%;
+    margin-top: -1px;
+    min-height: 24px; /* http://bugs.jqueryui.com/ticket/5603 */ 
+}
+
+
+
+.selectcourse {
+    margin: 20vh auto;
+}
+.addplayers {
+    margin: 10vh auto;
+}
+.addplayers input {
+    font-size: 1.5em;
+}
+
+/* header */
+
+.header a {
+    margin-top: 3vh !important;
+}
+
+
+/* text */
+
+p {
+    color: #333;
+    font-size: 1em;
+    text-align: center;
+    margin: 1em 0;
+}
+
+h6 {
+    color: #333;
+    text-transform: uppercase;
+    font-size: 1em;
+    text-align: center;
+    margin: 1em 0;
+}
+
+h4 {
+    color: #333;
+    text-transform: uppercase;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 1em 0;
+	
+}
+
+h5 {
+    color: #333;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    text-align: center;
+    margin: 1em 0;
+}
