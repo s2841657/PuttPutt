@@ -19,3 +19,27 @@ git config --global user.name Robert Heck
 git commit -m "initial commit"
 git push origin master
 git pull origin master
+git commit https://github.com/s2841657/PuttPutt.git
+cd workspace
+cd www
+cd ..
+git commit https://github.com/s2841657/PuttPutt.git
+cd www
+git commit https://github.com/s2841657/PuttPutt.git
+git show -ref
+git fetch
+git checkout
+git commit https://github.com/s2841657/PuttPutt.git
+git pull origin master "first commit"
+git commit -m "initial commit"
+git pull origin master "first commit"
+git push origin master
+git push origin master 
+git push origin master 
+git commit -m "second update"
+git commit -m "in"
+git add .
+git commit -m "second try"
+git push origion master
+git push origin
+git push origin master
