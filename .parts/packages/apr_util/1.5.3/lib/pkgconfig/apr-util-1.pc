@@ -1,0 +1,13 @@
+prefix=/home/action/.parts/packages/apr_util/1.5.3
+exec_prefix=${prefix}
+libdir=/home/action/.parts/packages/apr_util/1.5.3/lib
+APRUTIL_MAJOR_VERSION=1
+includedir=/home/action/.parts/packages/apr_util/1.5.3/include
+
+Name: APR Utils
+Description: Companion library for APR
+Version: 1.5.3
+# assume that apr-util requires libapr of same major version
+Requires: apr-1
+Libs: -L${libdir} -laprutil-${APRUTIL_MAJOR_VERSION}  -lexpat
+Cflags: -I${includedir}

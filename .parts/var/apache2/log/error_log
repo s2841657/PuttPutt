@@ -1,0 +1,5 @@
+[Sun Apr 27 07:37:50.630877 2014] [mpm_event:notice] [pid 1176:tid 140571207104256] AH00489: Apache/2.4.7 (Unix) PHP/5.5.11 configured -- resuming normal operations
+[Sun Apr 27 07:37:50.630966 2014] [core:notice] [pid 1176:tid 140571207104256] AH00094: Command line: '/home/action/.parts/packages/apache2/2.4.7-nitrous1/bin/httpd'
+[Fri Sep 12 01:23:39.289513 2014] [mpm_event:notice] [pid 513:tid 140085646841600] AH00489: Apache/2.4.7 (Unix) PHP/5.5.11 configured -- resuming normal operations
+[Fri Sep 12 01:23:39.289702 2014] [core:notice] [pid 513:tid 140085646841600] AH00094: Command line: '/home/action/.parts/packages/apache2/2.4.7-nitrous1/bin/httpd'
+[Fri Sep 12 01:39:28.902603 2014] [authz_core:error] [pid 762:tid 140085406000896] [client 192.168.252.1:35005] AH01630: client denied by server configuration: /home/action/workspace

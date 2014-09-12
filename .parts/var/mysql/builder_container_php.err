@@ -1,0 +1,27 @@
+140427 07:37:51 mysqld_safe Starting mysqld daemon with databases from /home/action/.parts/var/mysql
+2014-04-27 07:37:51 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2014-04-27 07:37:51 1325 [Warning] Buffered warning: Changed limits: max_open_files: 512 (requested 5000)
+
+2014-04-27 07:37:51 1325 [Warning] Buffered warning: Changed limits: table_cache: 400 (requested 2000)
+
+2014-04-27 07:37:51 1325 [Note] Plugin 'FEDERATED' is disabled.
+2014-04-27 07:37:51 1325 [Note] InnoDB: The InnoDB memory heap is disabled
+2014-04-27 07:37:51 1325 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2014-04-27 07:37:51 1325 [Note] InnoDB: Compressed tables use zlib 1.2.3
+2014-04-27 07:37:51 1325 [Note] InnoDB: Not using CPU crc32 instructions
+2014-04-27 07:37:51 1325 [Note] InnoDB: Initializing buffer pool, size = 128.0M
+2014-04-27 07:37:51 1325 [Note] InnoDB: Completed initialization of buffer pool
+2014-04-27 07:37:51 1325 [Note] InnoDB: Highest supported file format is Barracuda.
+2014-04-27 07:37:51 1325 [Note] InnoDB: 128 rollback segment(s) are active.
+2014-04-27 07:37:51 1325 [Note] InnoDB: Waiting for purge to start
+2014-04-27 07:37:51 1325 [Note] InnoDB: 5.6.13 started; log sequence number 1625987
+2014-04-27 07:37:51 1325 [Warning] No existing UUID has been found, so we assume that this is the first time that this server has been started. Generating a new UUID: d692ea27-cdde-11e3-814e-00163e99f0a2.
+2014-04-27 07:37:51 1325 [Note] RSA private key file not found: /home/action/.parts/var/mysql//private_key.pem. Some authentication plugins will not work.
+2014-04-27 07:37:51 1325 [Note] RSA public key file not found: /home/action/.parts/var/mysql//public_key.pem. Some authentication plugins will not work.
+2014-04-27 07:37:51 1325 [Note] Server hostname (bind-address): '*'; port: 3306
+2014-04-27 07:37:51 1325 [Note] IPv6 is available.
+2014-04-27 07:37:51 1325 [Note]   - '::' resolves to '::';
+2014-04-27 07:37:51 1325 [Note] Server socket created on IP: '::'.
+2014-04-27 07:37:51 1325 [Note] Event Scheduler: Loaded 0 events
+2014-04-27 07:37:51 1325 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: ready for connections.
+Version: '5.6.13'  socket: '/tmp/mysql.sock'  port: 3306  Source distribution
