@@ -43,3 +43,14 @@ git commit -m "second try"
 git push origion master
 git push origin
 git push origin master
+git commit -m "third"
+git add .
+git commit -m "third"
+git push origin master
+git add .
+git push origin master
+git commit -m "removed old www"
+git push origin master
+git add *
+git commit -m "bottom navbar"
+git push origin master
