@@ -11,7 +11,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 
 function onDeviceReady() {
-	scoreCard = window.openDatabase("Scores", "1.0", "Putt Putt Scores", 200000); 
+	scoreCard = window.openDatabase('Scores', '1.0', 'Putt Putt Scores', 200000); 
 }
 
 
