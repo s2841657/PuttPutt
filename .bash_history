@@ -54,3 +54,7 @@ git push origin master
 git add *
 git commit -m "bottom navbar"
 git push origin master
+git add
+git add .
+git commit -m "Pre-scorecard"
+git push origin master

@@ -9,3 +9,6 @@
 [Fri Sep 12 10:00:23.491923 2014] [mpm_event:notice] [pid 501:tid 140350294177536] AH00491: caught SIGTERM, shutting down
 [Sat Sep 13 03:43:57.531886 2014] [mpm_event:notice] [pid 507:tid 140586497210112] AH00489: Apache/2.4.7 (Unix) PHP/5.5.11 configured -- resuming normal operations
 [Sat Sep 13 03:43:57.534525 2014] [core:notice] [pid 507:tid 140586497210112] AH00094: Command line: '/home/action/.parts/packages/apache2/2.4.7-nitrous1/bin/httpd'
+[Sat Sep 13 08:00:28.535812 2014] [mpm_event:notice] [pid 507:tid 140586497210112] AH00491: caught SIGTERM, shutting down
+[Sat Sep 13 10:21:18.054952 2014] [mpm_event:notice] [pid 504:tid 139733320267520] AH00489: Apache/2.4.7 (Unix) PHP/5.5.11 configured -- resuming normal operations
+[Sat Sep 13 10:21:18.055196 2014] [core:notice] [pid 504:tid 139733320267520] AH00094: Command line: '/home/action/.parts/packages/apache2/2.4.7-nitrous1/bin/httpd'
