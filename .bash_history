@@ -58,3 +58,12 @@ git add
 git add .
 git commit -m "Pre-scorecard"
 git push origin master
+git add .
+git commit -m "Pre-scorecard"
+git push origin master
+git add .
+git commit -m "Pre-scorecard"
+git commit -m "Pre-database"
+git add .
+git commit -m "Pre-database"
+git push origin master

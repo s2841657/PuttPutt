@@ -2,16 +2,18 @@ var courseName;
 var currentHole;
 
 // This is the database
-var scoreCard;
-
-
+var scoreCard; 
 
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
 
 function onDeviceReady() {
-	scoreCard = window.openDatabase('Scores', '1.0', 'Putt Putt Scores', 200000); 
+	try {
+		scoreCard = window.openDatabase('Scores', '1.0', 'Putt Putt Scores', 200000);
+	} catch(e) {
+		alert("An error occurred: "+e);
+	}
 }
 
 
@@ -35,9 +37,21 @@ $('.courseSelect').click(function() {
 
 
 $('#setupPlayBtn').click(function() {
+	// At least one player must have entered a name
+	var nameEntered = false;
+	$('.playerName').each(function(index){
+		if ($(this).val().length > 0) {
+			nameEntered = true;
+			return false;
+		}
+	});
+	if (!nameEntered) {
+		alert ('Enter some player names.');
+		return false;
+	}
+						  
 	// Create a new scorecard in the database
 	initScorecard();
-	
 	// Display the player names and scorecard
 	initPerHoleTbl();
 	
