@@ -67,3 +67,10 @@ git commit -m "Pre-database"
 git add .
 git commit -m "Pre-database"
 git push origin master
+$ git add .
+git add .
+git commit -m "added form with html validaton via email"
+git push origin master
+git add .
+git commit -m "new share button with facebook and google plus"
+git push origin master

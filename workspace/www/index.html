@@ -49,7 +49,7 @@ Updated contributors
     
 		<title>Putt Putt Mermaid Beach</title>
 	</head>
-	<body>
+	<body onload="onBodyLoad()">
         
 		
 		<div id="homePage" data-role="page">
@@ -57,7 +57,7 @@ Updated contributors
 				<img src="img/logo.png" alt="" id="homeLogo" />
 
 				<a data-role="button" data-icon="carat-r" data-theme="a" id="homePlayBtn" href="#setupPage1">Play Putt Putt!</a>
-				<a data-role="button" data-icon="bullets" data-theme="b" href="#leaderboardsPage">Leaderboards</a>
+				<a data-role="button" data-icon="bullets" data-theme="b" id="homeLeaderboardBtn" href="#leaderboardsPage">Leaderboards</a>
 				<a data-role="button" data-icon="gear" data-theme="c" href="#settingsPage">Settings</a>
 			</div>
 		</div>
@@ -160,10 +160,10 @@ Updated contributors
             
             <div class="container">
                 <h6>Select A Course</h6>
-                <a data-role="button" data-icon="star" data-theme="a">Fun Run</a>
-                <a data-role="button" data-icon="star" data-theme="b">Jungle Trail</a>
-                <a data-role="button" data-icon="star" data-theme="d">Waterways Cove</a>
-                <table>
+                <a data-role="button" data-icon="star" data-theme="a" class="leaderboardBtn">Fun Run</a>
+                <a data-role="button" data-icon="star" data-theme="b" class="leaderboardBtn">Jungle Trail</a>
+                <a data-role="button" data-icon="star" data-theme="d" class="leaderboardBtn">Waterways Cove</a>
+                <table id="leaderboardTbl">
                     <thead>
                         <tr>
                             <td style="width: 25%">#</td>
@@ -184,14 +184,45 @@ Updated contributors
 				<a data-icon="carat-l" data-iconpos="notext" a href="#" data-rel="back"></a>
 				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
 			</div>
-			<iframe
+<!--       <script type="text/javascript">
+var map;
+function initialize() {
+  var mapOptions = {
+    zoom: 13,
+    center: new google.maps.LatLng(-28.043477, 153.433872),
+  };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  var myLatlng = new google.maps.LatLng(-28.043477, 153.433872);
+
+  var marker = new google.maps.Marker({
+    position: myLatlng,
+    map: map,
+    title: 'Space Needle, Seattle WA'
+  });
+}
+
+function loadScript() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBHDbyc9TApTKqHTu-hjqb_CXY_6s8bqhQ&callback=initialize';
+  document.body.appendChild(script);
+}
+
+window.onload = loadScript;
+
+</script>
+      <div id="map-canvas" style="width: 500px; height: 450px;"></div> -->
+		<iframe
 			width="100%"
 			height="90%"
 			frameborder="0"
 			style="border:0"
+      center = "-28.043477, 153.433872"
 			src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBHDbyc9TApTKqHTu-hjqb_CXY_6s8bqhQ
 			&q=putt+putt+in+mermaid+beach&zoom=16">
-			</iframe>
+			</iframe> -->
 		</div>
 
 		<div id="contactDetails" data-role="page">
@@ -360,6 +391,7 @@ Updated contributors
 		<script type="text/javascript" src="js/index.js"></script>
 		<script type="text/javascript" src="js/maps.js"></script>
     <script src="js/form.js"></script>
+		<script type="text/javascript" src="js/leaderboard.js"></script>
 		<script type="text/javascript" src="js/scoreboard.js"></script>
     <script src="assets/cool-share/plugin.js"></script>
     <script src="assets/js/demo.js"></script>

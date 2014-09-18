@@ -27,7 +27,7 @@ jQuery(function($)
                         'Reply-To': email
                     },
                     'subject': 'Website Contact Form Submission',
-                    'text': msg + playhere + favcourse + overallexp + overallclean + overallprice + staffexp + hear + offer + mobile,
+                    'text': msg +'\n' + playhere + favcourse + overallexp + overallclean + overallprice + staffexp + hear + offer + mobile,
                     'to': [
                     {
                         'email': 'joshua.mccure@griffithuni.edu.au',
