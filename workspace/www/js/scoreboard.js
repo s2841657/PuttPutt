@@ -1,136 +1,249 @@
-var courseName;
+var selectedCourse;
+// A list of courses
+var COURSES = {
+	FUNRUN : { value:300, name:'Fun Run', code:'FunRun' },
+	JUNGLETRAIL : { value:200, name:'Jungle Trail', code:'JungleTrail' },
+	WATERWAYSCOVE : { value: 100, name:'Waterways Cove', code:'WaterwaysCove' }
+};
+
 var currentHole;
-
-// This is the database
-var scoreCard = null; 
-
-
-
-/* This function prevents the event listener from
- * being called before the handler can respond.
- */
-function onBodyLoad() {
-	if (typeof navigator.device === 'undefined'){
-		onDeviceReady();
-	} else {
-		document.addEventListener('deviceready', onDeviceReady, false);
-	}
+// This is the unique id of each hole
+function getHoleID(course, hole) {
+	return course.value + hole;
 }
 
+// This will hold the database
+var database;
+// Whether a score has been edited (and needs saving)
+var wasEdited;
 
-function onDeviceReady() {
-	try {
-		// Open the database if there is support
-		if (window.openDatabase) {
-			scoreCard = window.openDatabase('Scores', '1.0', 'Putt Putt Scores', 200000);
-			scoreCard.transaction(createScorecard, errorCB, successCB);
-		}
-	} catch(e) {
-		alert('An error occurred: '+e);
-	}
-}
 
 
 $('#homePlayBtn').click(function() {
-	if (!window.openDatabase) {
+	if (window.openDatabase) {
+		try {
+			database = window.openDatabase('Scores', '1.0', 'Putt Putt Scores', 200000);
+			// Load an existing game
+			database.transaction(inProgressQuery, errorCB);
+		} catch(err) {
+			// If a console is available 
+			if (window.console && window.console.log) {
+				// log the error to it
+				console.log('An error occured: '+err);
+			}
+		}
+	} else {
 		alert ('Sorry, you don\'t have database support!');
-		//return false;
+		return false;
 	}
-	// Check whether a game is in progress
-	// SELECT name FROM sqlite_master WHERE type='table' AND name='scorecard';
-	// $(this).attr('href', '#perHolePage');
-	
-	// Or create a new one
 });
+
+
+
+// Check whether a game is already in progress
+function inProgressQuery(tx) {
+	tx.executeSql('SELECT HoleID FROM Scorecard', [], promptToContinue, errorCB);
+}
+
+
+
+// Check whether the user wants to continue a saved game
+function promptToContinue(tx, results) {
+	
+	
+	// NEED TO IMPLEMENT DIALOG BOX
+	
+	
+	if (results.rows.length > 0 &&
+			(selectedCourse = holeIDToCourseCode(results.rows[0].HoleID))
+			) {
+		database.transaction(setupExistingScorecard(), errorCB);
+		updatePerHolePage(currentHole=1);
+		window.location = '#perHolePage';
+	}
+}
+
 
 
 // Store the selected course
-$('.courseSelect').click(function() {
-	courseName = $(this).text();
+$('.courseSelectBtn').click(function() {
+	selectedCourse = courseNameToCode($(this).text());
 });
 
 
+
 $('#setupPlayBtn').click(function() {
-	// At least one player must have entered a name
-	var nameEntered = false;
-	$('.playerName').each(function(index){
-		if ($(this).val().length > 0) {
-			nameEntered = true;
-			return false;
-		}
-	});
-	if (!nameEntered) {
+	// Display the player names and scorecard
+	if (setupNewScorecard()) {
+		updatePerHolePage(currentHole=1);
+	} else {
 		alert ('Enter some player names.');
 		return false;
 	}
+});
+
+
+
+function setupNewScorecard() {
+	var nameEntered = false;
 	
-	// Display the player names and scorecard
-	initPerHoleTbl();
-	displayHole(currentHole = 1);
+	$('.playerName').each(function() {
+		if ($(this).val().length > 0 && $('.playerName').find() {
+			
+			if (!nameEntered) {
+				nameEntered = true;
+				// Clear the table
+				$('#perHoleTbl tbody').empty();
+			}
+			
+			addPlayerToScorecard($(this).val());
+		}
+	});
+	// Return whether a name was added 
+	return nameEntered;
+}
+
+
+
+function setupExistingScorecard(tx) {
+	tx.executeSql('SELECT DISTINCT Name FROM Scorecard', [], 
+			function(tx, result) {
+				$.each(result, function(index, value) {
+					addPlayerToScorecard(value.Name);
+				});
+			}, errorCB);
+}
+
+
+
+function addPlayerToScorecard(playerName) {
+	// Add the player to the scorecard
+	$('#perHoleTbl').append('<tr><td><div class="playerLbl">' +
+			 playerName +
+			'</div></td><td><input type="text" class="scoreInput" /></td>' +
+			'<td><div class="totalLbl"></div></td></tr>');
+	});
+}
+
+
+
+// Player's score textfield has been changed (and needs saving)
+$('#perHoleTbl .scoreInput').on('input propertychange paste', function() {
+	if (!wasEdited) {
+		wasEdited = true;
+	}
 });
 
 
 
 $('#prevHole').click(function() {
-	// Save before transition
-	
-	if (typeof currentHole === 'undefined'){
-		displayHole(currentHole=1);
-	} else if (currentHole > 1) {
-		displayHole(--currentHole);
-	}
+	updatePerHolePage(--currentHole);
 });
 
 
 
 $('#nextHole').click(function() {
-	if (typeof currentHole === 'undefined'){
-		displayHole(currentHole=1);
-	} else if (currentHole < 18) {
-		displayHole(++currentHole);
-	}
+	updatePerHolePage(++currentHole);
 });
 
 
 
-function displayHole(holeNumber) {
-	// Show the current hole
-	$('#holeLbl').text('Hole #' + holeNumber);
-}
-
-
-
-function initPerHoleTbl() {
-	// Clear the table
-	$('#perHoleTbl tbody').empty();
+function updatePerHolePage(hole) {
+	if (!hole || hole < 1) {
+		currentHole = 1;
+	}
 	
-	// Add the players to the scorecard
-	$('.playerName').each(function(index){
-		if ($(this).val().length > 0) {
-			$('#perHoleTbl').append('<tr><td><div class="playerLbl">' +
-					$(this).val() +
-					'</div></td><td><input type="text" class="scoreInput" /></td>' +
-					'<td><div class="totalLbl"></div></td></tr>');
-		}
-	});
+	if (wasEdited) {
+		wasEdited = false;
+		database.transaction(saveCurrentHole, errorCB);
+	}
+	
+	if (hole > 18) {
+		updateLeaderboard();
+	} else {
+		currentHole = hole;
+		displayCurrentHole();
+	}
 }
 
 
-function createScorecard(tx) {
-	// We want to clear any previous data in the table
-	tx.executeSql('DROP TABLE IF EXISTS scorecard;');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS scorecard (id INTEGER PRIMARY KEY, holeID INTEGER NOT NULL, name TEXT NOT NULL, score INTEGER);');
-	tx.executeSql('INSERT INTO scorecard (holeID, name, score) VALUES (1, "hello", 1);');
+
+function displayCurrentHole() {
+	// Show the current hole
+	$('#holeLbl').text('Hole #' + currentHole);
+	// Display each players' score for that hole
+	database.transaction(displayPerHoleScores, errorCB);
 }
+
+
+
+// Display the score on the per-hole table
+function displayPerHoleScores(tx) {
+	tx.executeSql('SELECT Name, Score FROM Scorecard WHERE HoleID = "' + getHoleID(selectedCourse.value, currentHole) + '"', [],
+			function(tx, result) {
+				var rowIndex;
+				var tblRows = $('#perHoleTbl tr');
+				$.each(result, function(tblIndex, value) {
+					if (-1 != (rowIndex = $.inArray(value.Name, tblRows.find('.playerLbl')))) {
+						tblRows.eq(rowIndex).find('.scoreInput').val(value.Score);
+					}
+				});
+			}, errorCB);
+}
+
+
+
+function saveCurrentHole() {
+	
+}
+
+
+
+function updateLeaderboard() {
+	
+}
+
+
+
+function holeIDToCourse(id) {
+	var course;
+	if (id > 300) {
+		course = COURSES.FUNRUN;
+	} else if (id > 200) {
+		course = COURSES.JUNGLETRAIL;
+	} else if (id > 100) {
+		course = COURSES.WATERWAYSCOVE;
+	} else {
+		course = null;
+	}
+	return course;
+}
+
+
+
+function courseFromName(name) {
+	var code;
+	switch (name) {
+		case COURSES.FUNRUN.name:
+			code = COURSES.FUNRUN;
+			break;
+		case COURSES.JUNGLETRAIL.name:
+			code = COURSES.JUNGLETRAIL;
+			break;
+		case COURSES.JUNGLETRAIL.name:
+			code = COURSES.JUNGLETRAIL;
+			break;
+	}
+	return code;
+}
+
 
 
 // Transaction error callback
 function errorCB(tx, err) {
-	alert('Error processing SQL: '+err);
-}
-
-
-// Transaction success callback
-function successCB() {
-	alert('Success!');
+	// If a console is available
+	if (window.console && window.console.log) {
+		// log the error to it
+		console.log('Error processing SQL: '+err);
+	}
 }
