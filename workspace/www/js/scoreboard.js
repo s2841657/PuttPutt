@@ -131,7 +131,6 @@ function addPlayerToScorecard(playerName) {
 			 playerName +
 			'</div></td><td><input type="text" class="scoreInput" /></td>' +
 			'<td><div class="totalLbl"></div></td></tr>');
-	});
 }
 
 
