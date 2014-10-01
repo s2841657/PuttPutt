@@ -6,7 +6,7 @@ var database;
 $('#homeLeaderboardBtn').click(function(){
 	if (!window.openDatabase) {
 		alert ('Sorry, you don\'t have database support!');
-		//return false;
+		return false;
 	}
 });
 

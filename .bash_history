@@ -74,3 +74,7 @@ git push origin master
 git add .
 git commit -m "new share button with facebook and google plus"
 git push origin master
+git add .
+git commit -m "added the leaderboard file"
+git push origin master
+git push origin master

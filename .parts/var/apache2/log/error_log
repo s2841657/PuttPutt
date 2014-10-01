@@ -22,3 +22,6 @@
 [Thu Sep 18 07:37:48.440119 2014] [mpm_event:notice] [pid 510:tid 140084081702656] AH00489: Apache/2.4.7 (Unix) PHP/5.5.11 configured -- resuming normal operations
 [Thu Sep 18 07:37:48.441163 2014] [core:notice] [pid 510:tid 140084081702656] AH00094: Command line: '/home/action/.parts/packages/apache2/2.4.7-nitrous1/bin/httpd'
 [Thu Sep 18 07:45:43.848027 2014] [mpm_event:error] [pid 510:tid 140084081702656] AH00484: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting
+[Thu Sep 18 14:00:36.677588 2014] [mpm_event:notice] [pid 510:tid 140084081702656] AH00491: caught SIGTERM, shutting down
+[Wed Oct 01 01:10:28.880920 2014] [mpm_event:notice] [pid 525:tid 140378454980352] AH00489: Apache/2.4.7 (Unix) PHP/5.5.11 configured -- resuming normal operations
+[Wed Oct 01 01:10:28.889316 2014] [core:notice] [pid 525:tid 140378454980352] AH00094: Command line: '/home/action/.parts/packages/apache2/2.4.7-nitrous1/bin/httpd'

@@ -49,7 +49,7 @@ Updated contributors
     
 		<title>Putt Putt Mermaid Beach</title>
 	</head>
-	<body onload="onBodyLoad()">
+	<body>
         
 		
 		<div id="homePage" data-role="page">
@@ -105,7 +105,7 @@ Updated contributors
 		<div id="perHolePage" data-role="page">
 			<div data-role="header" class="header">
 				<div id="holeLbl">Hole Number</div>
-				<a data-icon="carat-l" data-iconpos="notext" href="#homePage" data-rel="home"></a>
+				<a data-icon="carat-l" data-iconpos="notext" href="#homePage"></a>
 				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
 			</div>
 		  
@@ -134,7 +134,7 @@ Updated contributors
 		<div id="settingsPage" data-role="page">
 			<div data-role="header" class="header">
 				Settings
-				<a data-icon="carat-l" data-iconpos="notext" a href="#" data-rel="back"></a>
+				<a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
 				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
 			</div>
             
@@ -154,7 +154,7 @@ Updated contributors
 		<div id="leaderboardsPage" data-role="page">
 			<div data-role="header" class="header">
 				Leaderboards
-				<a data-icon="carat-l" data-iconpos="notext" a href="#" data-rel="back"></a>
+				<a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
 				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
 			</div>
             
@@ -181,48 +181,17 @@ Updated contributors
 		<div id="contactUs" data-role="page">
 			<div data-role="header" class="header">
 				Find us
-				<a data-icon="carat-l" data-iconpos="notext" a href="#" data-rel="back"></a>
+				<a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
 				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
 			</div>
-<!--       <script type="text/javascript">
-var map;
-function initialize() {
-  var mapOptions = {
-    zoom: 13,
-    center: new google.maps.LatLng(-28.043477, 153.433872),
-  };
-
-  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-  var myLatlng = new google.maps.LatLng(-28.043477, 153.433872);
-
-  var marker = new google.maps.Marker({
-    position: myLatlng,
-    map: map,
-    title: 'Space Needle, Seattle WA'
-  });
-}
-
-function loadScript() {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBHDbyc9TApTKqHTu-hjqb_CXY_6s8bqhQ&callback=initialize';
-  document.body.appendChild(script);
-}
-
-window.onload = loadScript;
-
-</script>
-      <div id="map-canvas" style="width: 500px; height: 450px;"></div> -->
-		<iframe
-			width="100%"
-			height="90%"
-			frameborder="0"
-			style="border:0"
-      center = "-28.043477, 153.433872"
-			src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBHDbyc9TApTKqHTu-hjqb_CXY_6s8bqhQ
-			&q=putt+putt+in+mermaid+beach&zoom=16">
-			</iframe> -->
+			<iframe
+				width="100%"
+				height="90%"
+				frameborder="0"
+				style="border:0"
+				center = "-28.043477, 153.433872"
+				src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBHDbyc9TApTKqHTu-hjqb_CXY_6s8bqhQ&q=putt+putt+in+mermaid+beach&zoom=16">
+			</iframe>
 		</div>
 
 		<div id="contactDetails" data-role="page">
@@ -239,147 +208,140 @@ window.onload = loadScript;
 					<p>2492 Gold coast Hwy Mermaid Beach</p>
 					<p>Phone Number: <a href="tel:0755753381">07 55753381</a></p>
 					<p><a href="http://puttputtgolf.com.au">Visit our website!</a></p>
-          <p><span class="socialShare"> social<!-- The share buttons will be inserted here --> </span></p>
-          
-          
-          
-          
+					<p><span class="socialShare"> social<!-- The share buttons will be inserted here --> </span></p>
 				</h5>
-      
 			</div>
 		</div>
-    
-                  <div id="feedback" data-role="page">
-            <div data-role="header" class="header">
-                Feedback
-                <a data-icon="carat-l" data-iconpos="notext" a href="#" data-rel="back"></a>
-                <a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
-            </div>
-            <div data-role="fieldcontain">
-             <form class="form-horizontal" id="contact_form">
-<fieldset>
+		
+		
+		
+		<div id="feedback" data-role="page">
+			<div data-role="header" class="header">
+				Feedback
+				<a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
+			</div>
+			<div data-role="fieldcontain">
+				<form class="form-horizontal" id="contact_form">
+					<fieldset>
+						<!-- Customer name -->
+						<label>Name</label>
+						<input id="name" name="name" type="text" placeholder="Enter your full name here" class="form-control input-md" required="" />
+						
+						<!-- Customr email-->
+						<label>Email</label>
+						<input id="email" name="email" type="text" placeholder="Enter your email address here" required="" />
+						
+						<!-- Customr Mobile-->
+						<label>Mobile</label>
+						<input type="number" id="mobile" name="mobile" type="text" placeholder="Enter your mobile number here" required="" />
+					</fieldset>
+					
+					
+					<!-- I play here:-->
+					<legend>I play here:</legend>
+					<fieldset data-role="controlgroup" data-type="horizontal" >
+						<input type="radio" class="playheres" name="playerheres" id="Often" value="Often" />
+						<label for="Often">Often</label>
+						<input type="radio" class="playheres" name="playerheres" id="Rarely" value="Rarely" />
+						<label for="Rarely">Rarely</label>
+						<input type="radio" class="playheres" name="playerheres" id="First Time" value="First Time" /> 
+						<label for="First Time">First Time</label>
+					</fieldset>
+					
+					
+					<!-- I played courses:-->
 
-<!-- Customer name -->
-  <label>Name</label>  
-  <input id="name" name="name" type="text" placeholder="Enter your full name here" class="form-control input-md" required="">
+					<!-- My favourite course is:-->
+					<legend>My favourite Course is:</legend>
+					<fieldset data-role="controlgroup" data-mini="true">
+						<input type="radio" class="favcourses" name="favcourses" id="Jungle Trail" value="Jungle Trail" />
+						<label for="Jungle Trail">Jungle Trail</label>
+						<input type="radio" class="favcourses" name="favcourses" id="Fun Run" value="Fun Run" />
+						<label for="Fun Run">Fun Run</label>
+						<input type="radio" class="favcourses" name="favcourses" id="Waterways" value="Waterways" />
+						<label for="Waterways">Waterways</label>
+					</fieldset>
 
-<!-- Customr email-->
-  <label>Email</label>  
-  <input id="email" name="email" type="text" placeholder="Enter your email address here" required="">
+					<!-- Overall exp:-->
+					<legend>How was your overall experience?</legend>
+					<fieldset data-role="controlgroup" data-type="horizontal" >
+						<input type="radio" class="overallexps" name="overallexps" id="Excellent1" value="Excellent" />
+						<label for="Excellent1">Excellent</label>
+						<input type="radio" class="overallexps" name="overallexps" id="Good1" value="Good" />
+						<label for="Good1">Good</label>
+						<input type="radio" class="overallexps" name="overallexps" id="Fair1" value="Fair" />
+						<label for="Fair1">Fair</label>
+					</fieldset>
+					
+					<!-- Overall upkeep and cleanliness:-->
+					<legend>Overall upkeep and cleanliness?</legend>
+					<fieldset data-role="controlgroup" data-type="horizontal" >
+						<input type="radio" class="overallcleans" name="overallcleans" id="Excellent2" value="Excellent" />
+						<label for="Excellent2">Excellent</label>
+						<input type="radio" class="overallcleans" name="overallcleans" id="Good2" value="Good" />
+						<label for="Good2">Good</label>
+						<input type="radio" class="overallcleans" name="overallcleans" id="Fair2" value="Fair" />
+						<label for="Fair2">Fair</label>
+					</fieldset>
 
-<!-- Customr Mobile-->
-  <label>Mobile</label>  
-  <input type="number" id="mobile" name="mobile" type="text" placeholder="Enter your mobile number here" required="">
-  </fieldset>
+					<!-- Price-->
+					<legend>Price of admission based on entertainment<br> quality and value?</legend>
+					<fieldset data-role="controlgroup" data-type="horizontal" >
+						<input type="radio" class="overallprices" name="overallprices" id="Excellent3" value="Excellent" />
+						<label for="Excellent3">Excellent</label>
+						<input type="radio" class="overallprices" name="overallprices" id="Good3" value="Good" />
+						<label for="Good3">Good</label>
+						<input type="radio" class="overallprices" name="overallprices" id="Fair3" value="Fair" />
+						<label for="Fair3">Fair</label>
+					</fieldset>
 
-<!-- I play here:-->
-  <legend>I play here:</legend> 
-  <fieldset data-role="controlgroup" data-type="horizontal" > 
-  <input type="radio" class="playheres" name="playerheres" id="Often" value="Often"> 
-  <label for="Often">Often</label>
-  <input type="radio" class="playheres" name="playerheres" id="Rarely" value="Rarely">
-  <label for="Rarely">Rarely</label>
-  <input type="radio" class="playheres" name="playerheres" id="First Time" value="First Time"> 
-  <label for="First Time">First Time</label>
-  </fieldset>
+					<!-- Staff Service-->
+					<legend>Staff Service - was it friendly and helpful?</legend>
+					<fieldset data-role="controlgroup" data-type="horizontal" >
+						<input type="radio" class="staffexps" name="staffexps" id="Excellent" value="Excellent" />
+						<label for="Excellent">Excellent</label>
+						<input type="radio" class="staffexps" name="staffexps" id="Good" value="Good" />
+						<label for="Good">Good</label>
+						<input type="radio" class="staffexps" name="staffexps" id="Fair" value="Fair" />
+						<label for="Fair">Fair</label>
+					</fieldset>
 
-<!-- I played courses:-->
+					<!-- how did you hear about us?-->
+					<legend>How did you hear about us?</legend>
+					<fieldset data-role="controlgroup" data-mini="true">
+						<input type="radio" class="hears" name="hears" id="Brochure" value="Brochure" />
+						<label for="Brochure">Brochure</label>
+						<input type="radio" class="hears" name="hears" id="Advertisement" value="Advertisement" />
+						<label for="Advertisement">Advertisement</label>
+						<input type="radio" class="hears" name="hears" id="Internet" value="Internet" />
+						<label for="Internet">Internet</label>
+						<input type="radio" class="hears" name="hears" id="Drive by" value="Drive by" />
+						<label for="Drive by">Drive by</label>
+						<input type="radio" class="hears" name="hears" id="Played Before" value="Played Before" />
+						<label for="Played Before">Played Before</label>
+						<input type="radio" class="hears" name="hears" id="Word of Mouth" value="Word of Mouth" />
+						<label for="Word of Mouth">Worth of Mouth</label>
+					</fieldset>
 
-<!-- My favourite course is:-->
-  <legend>My favourite Course is:</legend>  
-  <fieldset data-role="controlgroup" data-mini="true"> 
-  <input type="radio" class="favcourses" name="favcourses" id="Jungle Trail" value="Jungle Trail"> 
-  <label for="Jungle Trail">Jungle Trail</label>
-  <input type="radio" class="favcourses" name="favcourses" id="Fun Run" value="Fun Run">
-  <label for="Fun Run">Fun Run</label>
-  <input type="radio" class="favcourses" name="favcourses" id="Waterways" value="Waterways">
-  <label for="Waterways">Waterways</label> 
-  </fieldset>
-
-
-<!-- Overall exp:-->
-<legend>How was your overall experience?</legend>  
-  <fieldset data-role="controlgroup" data-type="horizontal" > 
-  <input type="radio" class="overallexps" name="overallexps" id="Excellent1" value="Excellent"> 
-  <label for="Excellent1">Excellent</label>
-  <input type="radio" class="overallexps" name="overallexps" id="Good1" value="Good">
-  <label for="Good1">Good</label>
-  <input type="radio" class="overallexps" name="overallexps" id="Fair1" value="Fair">
-  <label for="Fair1">Fair</label> 
-  </fieldset>
-
-<!-- Overall upkeep and cleanliness:-->
-  <legend>Overall upkeep and cleanliness?</legend>
-  <fieldset data-role="controlgroup" data-type="horizontal" > 
-  <input type="radio" class="overallcleans" name="overallcleans" id="Excellent2" value="Excellent">
-  <label for="Excellent2">Excellent</label>
-  <input type="radio" class="overallcleans" name="overallcleans" id="Good2" value="Good">
-  <label for="Good2">Good</label>
-  <input type="radio" class="overallcleans" name="overallcleans" id="Fair2" value="Fair">
-  <label for="Fair2">Fair</label> 
-  </fieldset>
-
-<!-- Price-->
-<legend>Price of admission based on entertainment<br> quality and value?</legend>
-  <fieldset data-role="controlgroup" data-type="horizontal" > 
-  <input type="radio" class="overallprices" name="overallprices" id="Excellent3" value="Excellent"> 
-  <label for="Excellent3">Excellent</label>
-  <input type="radio" class="overallprices" name="overallprices" id="Good3" value="Good">
-  <label for="Good3">Good</label>
-  <input type="radio" class="overallprices" name="overallprices" id="Fair3" value="Fair">
-  <label for="Fair3">Fair</label> 
-  </fieldset>
-
-<!-- Staff Service-->
-<legend>Staff Service - was it friendly and helpful?</legend>
-  <fieldset data-role="controlgroup" data-type="horizontal" > 
-  <input type="radio" class="staffexps" name="staffexps" id="Excellent" value="Excellent"> 
-  <label for="Excellent">Excellent</label>
-  <input type="radio" class="staffexps" name="staffexps" id="Good" value="Good">
-  <label for="Good">Good</label>
-  <input type="radio" class="staffexps" name="staffexps" id="Fair" value="Fair">
-  <label for="Fair">Fair</label> 
-  </fieldset>
-
-<!-- how did you hear about us?-->
-  <legend>How did you hear about us?</legend>
-  <fieldset data-role="controlgroup" data-mini="true">  
-  <input type="radio" class="hears" name="hears" id="Brochure" value="Brochure">
-  <label for="Brochure">Brochure</label>
-  <input type="radio" class="hears" name="hears" id="Advertisement" value="Advertisement"> 
-  <label for="Advertisement">Advertisement</label>
-  <input type="radio" class="hears" name="hears" id="Internet" value="Internet">
-  <label for="Internet">Internet</label>
-  <input type="radio" class="hears" name="hears" id="Drive by" value="Drive by">
-  <label for="Drive by">Drive by</label>
-  <input type="radio" class="hears" name="hears" id="Played Before" value="Played Before">
-  <label for="Played Before">Played Before</label>
-  <input type="radio" class="hears" name="hears" id="Word of Mouth" value="Word of Mouth">
-  <label for="Word of Mouth">Worth of Mouth</label>
-  </fieldset>
-
-<!-- Staff Service-->
-<legend>Would you like to recieve information on special offers?</legend>
-  <fieldset data-role="controlgroup" data-type="horizontal" > 
-  <input type="radio" class="offers" name="offers" id="Yes" value="Yes">
-  <label for="Yes">Yes</label>
-  <input type="radio" class="offers" name="offers" id="No" value="No">
-  <label for="No">No</label>
-
-
-<!-- Feedback message -->
-  <label>Additional comments<br> or suggestions?</label>
-    <textarea id="msg" name="msg" cols="9" rows="9" placeholder="Have any more feedback? Please leave us a message here, we would love to hear it!"></textarea>
-
-<!-- Button -->
-  <label></label>
-    <button id="submit" name="submit" class="btn btn-primary">Send Message</button>
-
-</fieldset>
-</form>
-</div>
-
-        </div>
+					<!-- Staff Service-->
+					<legend>Would you like to recieve information on special offers?</legend>
+					<fieldset data-role="controlgroup" data-type="horizontal" > 
+						<input type="radio" class="offers" name="offers" id="Yes" value="Yes" />
+						<label for="Yes">Yes</label>
+						<input type="radio" class="offers" name="offers" id="No" value="No" />
+						<label for="No">No</label>
+						
+						<!-- Feedback message -->
+						<label>Additional comments<br> or suggestions?</label>
+						<textarea id="msg" name="msg" cols="9" rows="9" placeholder="Have any more feedback? Please leave us a message here, we would love to hear it!"></textarea>
+						<!-- Button -->
+						<label></label>
+						<button id="submit" name="submit" class="btn btn-primary">Send Message</button>
+					</fieldset>
+				</form>
+			</div>
+		</div>
           
           
           
