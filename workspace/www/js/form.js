@@ -17,7 +17,7 @@ jQuery(function($)
         $.ajax(
         {
             type: "POST",
-            url: "https://mandrillapp.com/api/1.0/messages/send.json",
+          url: "https://mandrillapp.com/api/1.0/messages/send.json",
             data: {
                 'key': 'Fm7CkIWNFIi76r2aKTOZgQ',
                 'message': {
@@ -26,8 +26,8 @@ jQuery(function($)
                     'headers': {
                         'Reply-To': email
                     },
-                    'subject': 'Website Contact Form Submission',
-                    'text': msg +'\n' + playhere + favcourse + overallexp + overallclean + overallprice + staffexp + hear + offer + mobile,
+					'subject': 'Website Contact Form Submission',
+					'text': 'Customer message:' +  msg +'\n' + 'How often do you play here:' + playhere +'\n' + 'Favorite course:' + favcourse +'\n' + 'Overall experience:' +overallexp +'\n' + 'Overall upkeep and cleanliness:' + overallclean +'\n' + 'Price of admission based on entertainment:' + overallprice +'\n' + 'Staff Service - was it friendly and helpful:' + staffexp +'\n' + 'How did you hear about us?:' + hear +'\n' + 'Would you like to recieve information on special offers:' + offer +'\n' + 'Additional comments:' + mobile,
                     'to': [
                     {
                         'email': 'joshua.mccure@griffithuni.edu.au',

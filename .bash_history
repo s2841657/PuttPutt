@@ -110,3 +110,6 @@ git add .
 git commit -m "1-10-14"
 git push origin master
 git pull https://github.com/s2841657/PuttPutt.git
+git add .
+git commit -m "new update working gif"
+git push origin master

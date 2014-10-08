@@ -1,3 +1,61 @@
+/*var db;
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+
+// device APIs are available
+function onDeviceReady() {
+	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+	alert('Database: ' + db);
+	db.transaction(populateDB, errorCB, successCB);
+	return false;
+}
+
+
+// Populate the database
+function populateDB(tx) {
+	alert('populateDB');
+	tx.executeSql('DROP TABLE IF EXISTS Demo');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS Demo (ID INTEGER NOT NULL, Data TEXT)');
+	tx.executeSql('INSERT INTO DEMO (ID, Data) VALUES (1, "hello")', []);
+	tx.executeSql('INSERT INTO DEMO (ID, Data) VALUES (2, "goodbye")', []);
+}
+
+
+// Transaction success callback
+function successCB() {
+	alert('populateDB success!');
+	db.transaction(queryDB, errorCB);
+}
+
+
+// Query the database
+function queryDB(tx) {
+	tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+}
+
+
+// Query the success callback
+function querySuccess(tx, results) {
+	var htmlString = '';
+	var len = results.rows.length;
+	alert("No of rows in the table " + len);
+	
+	
+	for(var i=0; i<len; i++) {
+		htmlString += 'ID: ' + results.rows.item(i).ID + '\t Name: ' + results.rows.item(i).Data + '\n';
+	}
+	
+	alert(htmlString);
+}
+
+
+// Transaction error callback
+function errorCB(err) {
+	console.log("Error processing SQL: "+err.code);
+}*/
+
+
 // A list of courses
 var COURSES = {
 	FUNRUN : { value:100, name:'Fun Run', code:'FunRun' },
@@ -228,6 +286,8 @@ function displayPerHoleScores(tx) {
 					}
 				});
 			}, errorCB);
+	
+	alert('after');
 }
 
 
