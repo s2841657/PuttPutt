@@ -1,8 +1,8 @@
 // A list of courses
 var COURSES = {
-	FUNRUN : { value:300, name:'Fun Run', code:'FunRun' },
+	FUNRUN : { value:100, name:'Fun Run', code:'FunRun' },
 	JUNGLETRAIL : { value:200, name:'Jungle Trail', code:'JungleTrail' },
-	WATERWAYSCOVE : { value: 100, name:'Waterways Cove', code:'WaterwaysCove' }
+	WATERWAYSCOVE : { value: 300, name:'Waterways Cove', code:'WaterwaysCove' }
 };
 // The course which is being played (eg: COURSES.FUNRUN)
 var selectedCourse;
@@ -51,7 +51,7 @@ function inProgressQuery(tx) {
 
 // Check whether the user wants to continue a saved game
 function promptToContinue(tx, results) {
-	
+	alert('promptToContinue');
 	
 	// NEED TO IMPLEMENT DIALOG BOX
 	
@@ -68,7 +68,7 @@ function promptToContinue(tx, results) {
 
 
 // Store the selected course
-$('.courseSelectBtn').click(function() {
+$('.courseSelect').click(function() {
 	selectedCourse = courseFromName($(this).text());
 });
 
@@ -77,6 +77,7 @@ $('.courseSelectBtn').click(function() {
 $('#setupPlayBtn').click(function() {
 	// Display the player names and scorecard
 	if (setupNewScorecard()) {
+		wasEdited = false;
 		updatePerHolePage(1);
 		database.transaction(createNewScorecard, errorCB);
 	} else {
@@ -88,28 +89,41 @@ $('#setupPlayBtn').click(function() {
 
 
 function setupNewScorecard() {
-	var nameEntered = false;
-	var playerName;
+	var players = getUniqueNames();
 	
+	$.each(players, function(index, value) {
+		addPlayerToScorecard(value);
+	});
+	
+	// Return whether names were entered 
+	return players.length > 0;
+}
+
+
+
+function getUniqueNames() {
+	var players = [];
+	var index = 0;
+	
+	var name;
 	$('.playerName').each(function() {
-		playerName = $(this).val();
-		if (playerName.length > 0) {
+		
+		name = $(this).val();
+		if (name && name.length > 0) {
 			
-			if (!nameEntered) {
-				nameEntered = true;
+			if (players.length == 0) {
 				// Clear the table
 				$('#perHoleTbl tbody').empty();
-				// The first name needn't be checked
-				addPlayerToScorecard(playerName);
-			
+				players[index++] = name;
+				
 			// Add unique player names to the scorecard
-			} else if (-1 == $.inArray(playerName, $('#perHoleTbl .playerLbl'))) {
-				addPlayerToScorecard(playerName);
+			} else if (-1 == $.inArray(name, players)) {
+				players[index++] = name;
 			}
 		}
 	});
-	// Return whether a name was added 
-	return nameEntered;
+	
+	return players;
 }
 
 
@@ -157,19 +171,25 @@ $('#nextHole').click(function() {
 
 
 function updatePerHolePage(hole) {
+	holeInOneVisible(false);
 	if (wasEdited) {
 		alert('updatePerHolePage > wasEdited');
-		wasEdited = false;
 		database.transaction(saveCurrentHole, errorCB);
+		wasEdited = false;
 	}
 	
 	var willUpdate = false;
 	
 	if (!hole || hole < 1) {
-				willUpdate = ((hole = 1) != currentHole);
+		willUpdate = ((hole = 1) != currentHole);
 	} else if (hole > 18) {
+		if (hole == 19) {
+			alert('leaderboard');
+			//updateLeaderboard();
+			//window.location = '#wholeCoursePage';
+		}
+		
 		hole = 18;
-		//updateLeaderboard();
 	} else {
 		willUpdate = true;
 	}
@@ -220,34 +240,56 @@ function createNewScorecard(tx) {
 
 
 function saveCurrentHole(tx) {
-alert('saveCurrentHole');
-
-	//var holeID = getHoleID(selectedCourse, currentHole);
+	alert('saveCurrentHole');
+	var holeID = getHoleID(selectedCourse, currentHole);
 	
-	// Create the query to save each players' score
-	var qry = 'INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score)';
-
 	$('#perHoleTbl tr').each(function(index, value) {
+		alert('inEach');
 
-alert('inEach');
-
-		/*if (0 == index) {
-			qry += ' SELECT ' + holeID + ' AS HoleID, ' + value[0].text() + ' AS Name, ' + value[1].val() + ' AS Score';
-		} else {
-			qry += ' UNION ALL SELECT ' + holeID + ', ' + value[0].text() + ', ' + value[1].val();
-		}*/
+		tx.executeSql('INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score) VALUES ($, $, $)', [holeID, value[0].text(), value[1].val()],
+				function() { alert('saveSuccessful');  }, errorCB);
 	});
-	
-	alert('' + qry);
-	
-	// Update each player's score in the database
-	tx.executeSql(qry, [], function (tx){ alert('saveCurrentHole'); }, errorCB);
 }
 
 
 
 function updateLeaderboard() {
 	
+}
+
+
+
+$('#holeInfo').click(function() {
+	var imgLocation = '/img/hole/test.gif';// + getHoleID(selectedCourse, currentHole) + '.gif';
+	
+	alert(''+imgLocation);
+	
+	$('#holeOverlay').html('<img src="'+ imgLocation +'"></img>');
+	
+	holeInOneVisible(true);
+});
+
+
+
+$('#holeOverlay').click(function(){
+	$(this).hide();
+	holeInOneVisible(false);
+});
+
+
+
+function holeInOneVisible(diagramVisible) {
+	if (diagramVisible) {
+		$('#holeOverlay').show();
+		
+		$('#perHoleTbl').hide();
+		$('#footerNav').hide();
+	} else {
+		$('#holeOverlay').hide();
+		
+		$('#perHoleTbl').show();
+		$('#footerNav').show();
+	}
 }
 
 
@@ -273,11 +315,11 @@ function courseFromName(name) {
 function courseFromholeID(id) {
 	var course;
 	if (id > 300) {
-		course = COURSES.FUNRUN;
+		course = COURSES.WATERWAYSCOVE;
 	} else if (id > 200) {
 		course = COURSES.JUNGLETRAIL;
 	} else if (id > 100) {
-		course = COURSES.WATERWAYSCOVE;
+		course = COURSES.FUNRUN;
 	} else {
 		course = null;
 	}

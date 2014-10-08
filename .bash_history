@@ -78,3 +78,35 @@ git add .
 git commit -m "added the leaderboard file"
 git push origin master
 git push origin master
+git add .
+cd workspace
+unzip www.zip
+unzip file.zip -d workspace/www.zip
+unzip .zip -d workspace/www.zip
+unzip www.zip -d workspace
+git add .
+git add .
+git commit -m ""
+git commit -m "1-10-14"
+git push origin master
+git pull ...
+git pull https://github.com/s2841657/PuttPutt.git
+unzip www.zip -d workspace
+git add .
+git commit -m "1-10-14"
+git push origin master
+git add .
+git commit -m "1-10-14"
+git push origin master
+git pull https://github.com/s2841657/PuttPutt.git
+unzip www.zip -d workspace
+git add .
+git commit -m "1-10-14"
+git push origin master
+git add .
+git commit -m "1-10-14"
+git push origin master
+git add .
+git commit -m "1-10-14"
+git push origin master
+git pull https://github.com/s2841657/PuttPutt.git
