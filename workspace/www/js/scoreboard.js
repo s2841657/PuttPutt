@@ -251,33 +251,33 @@ function displayPerHoleScores(tx) {
 function displayPerHoleTotal(tx) {
 	tx.executeSql('SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name', [], function(tx, result) {
 		var rowIndex;
-			var qryLength = result.rows.length;
-			
-			var tblRows = $('#perHoleTbl tbody tr');
-			var players = tblRows.find('.playerLbl');
-			var playerLength = players.length;
-			
-			for (var i=0; i < qryLength; ++i) {
-				rowIndex = -1;
-				
-				for (var j=0; j < playerLength; ++j) {
-					if (players.eq(j).text() === result.rows.item(i).Name) {
-						rowIndex = j;
-						break;
-					}
-				}
-				
-				if (-1 != rowIndex) {
-					tblRows.eq(rowIndex).find('.totalLbl').text(result.rows.item(i).Total);
+		var qryLength = result.rows.length;
+
+		var tblRows = $('#perHoleTbl tbody tr');
+		var players = tblRows.find('.playerLbl');
+		var playerLength = players.length;
+
+		for (var i=0; i < qryLength; ++i) {
+			rowIndex = -1;
+
+			for (var j=0; j < playerLength; ++j) {
+				if (players.eq(j).text() === result.rows.item(i).Name) {
+					rowIndex = j;
+					break;
 				}
 			}
+
+			if (-1 != rowIndex) {
+				tblRows.eq(rowIndex).find('.totalLbl').text(result.rows.item(i).Total);
+			}
+		}
 	}, errorCB);
 }
 
 
 function createNewScorecard(tx) {
 	tx.executeSql('DROP TABLE IF EXISTS Scorecard', [], null, errorCB);
-	tx.executeSql('CREATE TABLE IF NOT EXISTS Scorecard (id INTEGER PRIMARY KEY AUTOINCREMENT, HoleID INTEGER, Name TEXT NOT NULL, Score INTEGER)', [], null, errorCB);
+	tx.executeSql('CREATE TABLE IF NOT EXISTS Scorecard (HoleID INTEGER NOT NULL, Name TEXT NOT NULL, Score INTEGER, PRIMARY KEY (HoleID, Name))', [], null, errorCB);
 }
 
 
