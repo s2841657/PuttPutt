@@ -39,3 +39,4 @@
 [Mon Oct 13 05:00:16.567200 2014] [mpm_event:notice] [pid 507:tid 140240057980672] AH00491: caught SIGTERM, shutting down
 [Mon Oct 13 11:10:39.989724 2014] [mpm_event:notice] [pid 502:tid 140110922254080] AH00489: Apache/2.4.7 (Unix) PHP/5.5.11 configured -- resuming normal operations
 [Mon Oct 13 11:10:39.989935 2014] [core:notice] [pid 502:tid 140110922254080] AH00094: Command line: '/home/action/.parts/packages/apache2/2.4.7-nitrous1/bin/httpd'
+[Mon Oct 13 13:30:46.051355 2014] [mpm_event:error] [pid 502:tid 140110922254080] AH00485: scoreboard is full, not at MaxRequestWorkers
