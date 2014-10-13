@@ -279,7 +279,7 @@ table tbody {
 
 /* scoreboard */
 .scoreInput {
-    width: 1em !important;
+    width: 100%;
 }
 
 

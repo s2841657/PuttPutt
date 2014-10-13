@@ -53,9 +53,9 @@ function querySuccess(tx, results) {
 // Transaction error callback
 function errorCB(err) {
 	console.log("Error processing SQL: "+err.code);
-}*/
+}
 
-
+*/
 // A list of courses
 var COURSES = {
 	FUNRUN : { value:100, name:'Fun Run', code:'FunRun' },
@@ -65,44 +65,47 @@ var COURSES = {
 // The course which is being played (eg: COURSES.FUNRUN)
 var selectedCourse;
 
+var debug = 0;
 
 var currentHole;
 // This is the unique id of each hole
 function getHoleID(course, hole) {
-	return course.value + hole;
+	return parseInt(course.value + hole);
 }
 
-// This will hold the database
-var database;
 // Whether a score has been edited (and needs saving)
 var wasEdited;
 
+// This will hold the database
+var database;
+document.addEventListener('deviceready', onDeviceReady, false);
 
+
+// device APIs are available
+function onDeviceReady() {
+	//alert('onDeviceReady');
+	database = window.openDatabase('Scorecard', '1.0', 'Putt Putt Scores', 200000);
+	// alert(''+database);
+	return false;
+}
 
 $('#homePlayBtn').click(function() {
-	if (window.openDatabase) {
-		try {
-			database = window.openDatabase('Scores', '1.0', 'Putt Putt Scores', 200000);
-			// Load an existing game
-			database.transaction(inProgressQuery, errorCB);
-		} catch(err) {
-			// If a console is available 
-			if (window.console && window.console.log) {
-				// log the error to it
-				console.log('An error occured: '+err);
-			}
-		}
-	} else {
-		alert ('Sorry, you don\'t have database support!');
-		//return false;
-	}
+	// if (window.openDatabase) {
+	// 	// Load an existing game
+	// 	database.transaction(inProgressQuery, null,errorCB);
+	// } else {
+	// 	alert ('Sorry, you don\'t have database support!');
+	// 	return false;
+	// }
 });
 
 
 
 // Check whether a game is already in progress
 function inProgressQuery(tx) {
-	tx.executeSql('SELECT HoleID FROM Scorecard', [], promptToContinue, errorCB);
+	//alert('inProgressQuery');
+	tx.executeSql('SELECT HoleID FROM Scorecard', null, null, errorCB);//, [], promptToContinue, errorCB);
+	//alert('after inProgressQuery');
 }
 
 
@@ -135,9 +138,12 @@ $('.courseSelect').click(function() {
 $('#setupPlayBtn').click(function() {
 	// Display the player names and scorecard
 	if (setupNewScorecard()) {
-		wasEdited = false;
-		updatePerHolePage(1);
-		database.transaction(createNewScorecard, errorCB);
+		database.transaction(createNewScorecard, errorCB, function(){
+			//alert("finished creating scoreboard");
+			wasEdited = false;
+			updatePerHolePage(1);
+		});
+		//alert('after setupPlayBtn');
 	} else {
 		alert ('Enter some player names.');
 		return false;
@@ -231,9 +237,13 @@ $('#nextHole').click(function() {
 function updatePerHolePage(hole) {
 	holeInOneVisible(false);
 	if (wasEdited) {
-		alert('updatePerHolePage > wasEdited');
-		database.transaction(saveCurrentHole, errorCB);
-		wasEdited = false;
+		//alert('updatePerHolePage > wasEdited');
+		database.transaction(saveCurrentHole, errorCB, function(){
+			wasEdited = false;
+			currentHole = hole;
+			displayCurrentHole();
+		});
+		return;
 	}
 	
 	var willUpdate = false;
@@ -273,42 +283,65 @@ function displayCurrentHole() {
 
 // Display the score on the per-hole table
 function displayPerHoleScores(tx) {
-	alert('displayPerHoleScores');
-	
-	tx.executeSql('SELECT Name, Score FROM Scorecard WHERE HoleID = $', [getHoleID(selectedCourse.value, currentHole)],
-			function(tx, result) {
-				alert('SELECT Name, Score FROM Scorecard length = ' + result.rows.length);
+	// alert('displayPerHoleScores current_hole:' + currentHole);
+		var current_hole = getHoleID(selectedCourse, currentHole);
+		//alert("Current hole " + current_hole);
+		tx.executeSql('SELECT Name, Score, HoleID FROM Scorecard WHERE HoleID='+current_hole, [],
+			function(tx, results) {
 				var rowIndex;
-				var tblRows = $('#perHoleTbl tr');
-				$.each(result, function(tblIndex, value) {
-					if (-1 != (rowIndex = $.inArray(value.Name, tblRows.find('.playerLbl')))) {
-						tblRows.eq(rowIndex).find('.scoreInput').val(value.Score);
+		        var len = results.rows.length;
+		        var tblRows = $('#perHoleTbl tbody tr');
+		        for (var i=0; i<len; i++){
+		        	rowIndex = -1;
+		        	var players = $('.playerLbl');
+		        	for(var j = 0; j < players.length; j++) {
+		        		if($('.playerLbl').eq(j).text() === results.rows.item(i).Name) {
+		        			rowIndex = j;
+		        			break;
+		        		}
+		        	}
+		        
+					if (rowIndex != -1) {
+						tblRows.eq(rowIndex).find('.scoreInput').val(results.rows.item(i).Score);
 					}
-				});
-			}, errorCB);
+					if(debug == 1) alert("The score for " + results.rows.item(i).Name + " is " + results.rows.item(i).Score);
+		        }				
+
+			}, function(){alert("error?")});
 	
-	alert('after');
+	// alert('after displayPerHoleScores');
 }
 
 
 
 function createNewScorecard(tx) {
-	tx.executeSql('DROP TABLE IF EXISTS Scorecard');
-	tx.executeSql('CREATE TABLE IF NOT EXISTS Scorecard (HoleID INTEGER NOT NULL, Name TEXT NOT NULL, Score INTEGER, PRIMARY KEY (HoleID, Name)) WITHOUT ROWID');	
+	if(debug == 1) alert('createNewScorecard');
+	tx.executeSql('DROP TABLE IF EXISTS Scorecard',[], null,errorCB);
+	tx.executeSql('CREATE TABLE IF NOT EXISTS Scorecard (id INTEGER PRIMARY KEY AUTOINCREMENT, HoleID INTEGER, Name TEXT NOT NULL, Score INTEGER)',[], null,errorCB);
 }
 
 
 
 function saveCurrentHole(tx) {
-	alert('saveCurrentHole');
+	if(debug == 1) alert('saveCurrentHole');
 	var holeID = getHoleID(selectedCourse, currentHole);
-	
-	$('#perHoleTbl tr').each(function(index, value) {
-		alert('inEach');
-
-		tx.executeSql('INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score) VALUES ($, $, $)', [holeID, value[0].text(), value[1].val()],
-				function() { alert('saveSuccessful');  }, errorCB);
+	$('#perHoleTbl tbody tr').each(function(index, value) {
+		if(debug == 1) alert('inEach');
+		var c_hole = holeID;
+		// var c_name = value[0].text();
+		// var c_score = value[1].val();
+		var c_name = $(this).find("td").eq(0).text();
+		var c_score = parseInt($(this).find("td").eq(1).find("input").val());
+		// alert($(this).find("td").eq(1).text());
+		// tx.executeSql('SELECT Name, Score, HoleID FROM Scorecard WHERE HoleID=101', [], function(){alert("FUCK YOU CUNT")}, errorCB);
+		// alert('INSERT INTO Scorecard (HoleID, Name, Score) VALUES ('+holeID+', "'+value[0].text()+'", '+value[1].val()+')');
+		if(debug == 1) alert('INSERT INTO Scorecard (HoleID, Name, Score) VALUES ('+c_hole+', "'+c_name+'", '+c_score+')');
+		tx.executeSql('INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score) VALUES ('+c_hole+', "'+c_name+'", '+c_score+')', [], 
+			function() { if(debug==1) alert('saveSuccessful');  }, function(){alert("Error on insert")});
+		// tx.executeSql('INSERT INTO Scorecard (HoleID, Name, Score) VALUES (102, "ok", 120)', [], 
+		// 	function() { alert('saveSuccessful');  }, function(){alert("Error on insert")});	
 	});
+	return;
 }
 
 
@@ -320,7 +353,7 @@ function updateLeaderboard() {
 
 
 $('#holeInfo').click(function() {
-	var imgLocation = '/img/hole/test.gif';// + getHoleID(selectedCourse, currentHole) + '.gif';
+	var imgLocation = 'img/hole/test.gif';// + getHoleID(selectedCourse, currentHole) + '.gif';
 	
 	alert(''+imgLocation);
 	
@@ -390,6 +423,7 @@ function courseFromholeID(id) {
 
 // Database transaction error callback
 function errorCB(tx, err) {
+		alert('Error processing SQL: '+err.code);
 	// If a console is available
 	if (window.console && window.console.log) {
 		// log the error to it

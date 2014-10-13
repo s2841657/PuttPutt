@@ -113,3 +113,6 @@ git pull https://github.com/s2841657/PuttPutt.git
 git add .
 git commit -m "new update working gif"
 git push origin master
+git add .
+git commit -m "new update working gif"
+git push origin master
