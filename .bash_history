@@ -116,3 +116,6 @@ git push origin master
 git add .
 git commit -m "new update working gif"
 git push origin master
+git add .
+git commit -m "database saving scores"
+git push origin master
