@@ -22,6 +22,8 @@ function getHoleID(course, hole) {
 // Whether a score has been edited (and needs saving)
 var wasEdited;
 
+//
+var willContinue;
 // This will hold the database
 var database;
 document.addEventListener('deviceready', onDeviceReady, false);
@@ -37,16 +39,6 @@ function onDeviceReady() {
 	return false;
 }
 
-$('#homePlayBtn').click(function() {
-	if (window.openDatabase) {
-		// Load an existing game
-		database.transaction(inProgressQuery, errorCB, promptToContinue);
-	} else {
-		alert ('Sorry, you don\'t have database support!');
-		return false;
-	}
-});
-
 
 
 $('#homeLeaderboardBtn').click(function(){
@@ -58,25 +50,41 @@ $('#homeLeaderboardBtn').click(function(){
 
 
 
+$('#homePlayBtn').click(function() {
+	if (window.openDatabase) {
+		willContinue = false;
+		// Load an existing game
+		database.transaction(inProgressQuery, errorCB, function() {
+			if (willContinue) {
+				database.transaction(setupExistingScorecard, errorCB);
+				updatePerHolePage(currentHole=1);
+				window.location = '#perHolePage';
+			}
+		});
+	} else {
+		alert ('Sorry, you don\'t have database support!');
+		return false;
+	}
+});
+
+
+
 // Check whether a game is already in progress
 function inProgressQuery(tx) {
-	tx.executeSql('SELECT HoleID FROM Scorecard');
+	tx.executeSql('SELECT HoleID FROM Scorecard', [], promptToContinue, errorCB);
+	
 }
 
 
 
 // Check whether the user wants to continue a saved game
-function promptToContinue(tx) {
+function promptToContinue(tx, result) {
 	
 	// NEED TO IMPLEMENT DIALOG BOX
-	
-	
-	if (results.rows.length > 0 &&
-			(selectedCourse = courseFromholeID(result.rows[0].HoleID))
+	if (result.rows.length > 0 &&
+			(selectedCourse = courseFromholeID(result.rows.item(0).HoleID))
 			) {
-		database.transaction(setupExistingScorecard, errorCB);
-		updatePerHolePage(currentHole=1);
-		window.location = '#perHolePage';
+		willContinue = true;
 	}
 }
 

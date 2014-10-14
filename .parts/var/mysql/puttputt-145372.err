@@ -1718,3 +1718,33 @@ Killed
 2014-10-14 03:44:56 868 [Note] Event Scheduler: Loaded 0 events
 2014-10-14 03:44:56 868 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: ready for connections.
 Version: '5.6.13'  socket: '/tmp/mysql.sock'  port: 3306  Source distribution
+Killed
+141014 03:54:46 mysqld_safe Number of processes running now: 0
+141014 03:54:46 mysqld_safe mysqld restarted
+2014-10-14 03:54:49 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2014-10-14 03:54:50 948 [Note] Plugin 'FEDERATED' is disabled.
+2014-10-14 03:54:50 948 [Note] InnoDB: The InnoDB memory heap is disabled
+2014-10-14 03:54:50 948 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2014-10-14 03:54:50 948 [Note] InnoDB: Compressed tables use zlib 1.2.3
+2014-10-14 03:54:50 948 [Note] InnoDB: Using CPU crc32 instructions
+2014-10-14 03:54:50 948 [Note] InnoDB: Initializing buffer pool, size = 128.0M
+2014-10-14 03:54:50 948 [Note] InnoDB: Completed initialization of buffer pool
+2014-10-14 03:54:50 948 [Note] InnoDB: Highest supported file format is Barracuda.
+2014-10-14 03:54:50 948 [Note] InnoDB: The log sequence numbers 1626363 and 1626363 in ibdata files do not match the log sequence number 1626403 in the ib_logfiles!
+2014-10-14 03:54:50 948 [Note] InnoDB: Database was not shutdown normally!
+2014-10-14 03:54:50 948 [Note] InnoDB: Starting crash recovery.
+2014-10-14 03:54:50 948 [Note] InnoDB: Reading tablespace information from the .ibd files...
+2014-10-14 03:54:50 948 [Note] InnoDB: Restoring possible half-written data pages 
+2014-10-14 03:54:50 948 [Note] InnoDB: from the doublewrite buffer...
+2014-10-14 03:54:50 948 [Note] InnoDB: 128 rollback segment(s) are active.
+2014-10-14 03:54:50 948 [Note] InnoDB: Waiting for purge to start
+2014-10-14 03:54:50 948 [Note] InnoDB: 5.6.13 started; log sequence number 1626403
+2014-10-14 03:54:50 948 [Note] RSA private key file not found: /home/action/.parts/var/mysql//private_key.pem. Some authentication plugins will not work.
+2014-10-14 03:54:50 948 [Note] RSA public key file not found: /home/action/.parts/var/mysql//public_key.pem. Some authentication plugins will not work.
+2014-10-14 03:54:50 948 [Note] Server hostname (bind-address): '*'; port: 3306
+2014-10-14 03:54:50 948 [Note] IPv6 is available.
+2014-10-14 03:54:50 948 [Note]   - '::' resolves to '::';
+2014-10-14 03:54:50 948 [Note] Server socket created on IP: '::'.
+2014-10-14 03:54:50 948 [Note] Event Scheduler: Loaded 0 events
+2014-10-14 03:54:50 948 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: ready for connections.
+Version: '5.6.13'  socket: '/tmp/mysql.sock'  port: 3306  Source distribution
