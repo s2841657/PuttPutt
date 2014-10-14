@@ -80,11 +80,9 @@ function inProgressQuery(tx) {
 
 // Check whether the user wants to continue a saved game
 function promptToContinue(tx, result) {
-	
-	// NEED TO IMPLEMENT DIALOG BOX
 	if (result.rows.length > 0 &&
 			(selectedCourse = courseFromholeID(result.rows.item(0).HoleID)) &&
-			confirm('Do you want to continue your previous game?')) {
+			confirm('Continue your previous game?')) {
 		willContinue = true;
 	}
 }
@@ -136,7 +134,6 @@ function getUniqueNames() {
 			
 			if (players.length == 0) {
 				// Clear the table
-				$('#perHoleTbl tbody').empty();
 				players[index++] = name;
 				
 			// Add unique player names to the scorecard
@@ -160,12 +157,18 @@ function setupExistingScorecard(tx) {
 				}
 				
 				addPlayersToScorecard();
+				
+				wasEdited = true;
+				updatePerHolePage(1);
 			}, errorCB);
 }
 
 
 
 function addPlayersToScorecard() {
+	if (playerNames.length > 0) {
+		$('#perHoleTbl tbody').empty();
+	}
 	// Add each player to the scorecard
 	$.each(playerNames, function(index, value) {
 		$('#perHoleTbl tbody').append('<tr><td><div class="playerLbl">' +
