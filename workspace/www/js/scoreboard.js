@@ -1,3 +1,7 @@
+/*
+	It is generally bad design to hardcode certain things like the holeID and COURSES, but I wanted to avoid having to create a table with static values, then having to also implement foreign keys. This may become an issue if more courses or holes are added.
+*/
+
 // A list of courses
 var COURSES = {
 	FUNRUN : { value:100, name:'Fun Run', code:'FunRun' },
@@ -6,6 +10,8 @@ var COURSES = {
 };
 // The course which is being played (eg: COURSES.FUNRUN)
 var selectedCourse;
+// The course which is being viewed in the leaderboard
+var leaderboardCourse;
 
 var currentHole;
 // This is the unique id of each hole
@@ -349,6 +355,40 @@ function updateLeaderboard(tx) {
 			'UNION SELECT RowID FROM Leaderboard WHERE Course != "' + selectedCourse.code + '")';
 	
 	tx.executeSql(limitQry);
+}
+
+
+
+// Display the high scores for each course
+$('.leaderboardBtn').click(function() {
+	var temp;
+	// When a new course is selected
+	if (leaderboardCourse !== (temp = courseFromName($(this).text())) && temp) {
+		alert(temp.name);
+		leaderboardCourse = temp;
+		// Clear the table
+		$('#leaderboardTbl tbody').remove();
+	
+		// Get the high scores from the database
+		database.transaction(displayLeaderboardPage, errorCB); 
+	}
+});
+
+
+
+function displayLeaderboardPage(tx) {
+	tx.executeSql('SELECT Name, Score FROM Leaderboard WHERE Course = "'+ leaderboardCourse.code +'" ORDER BY Score', [], function(tx, result) {
+		for (var i = 0, len = result.rows.length; i < len; ++i) {
+			alert (result.rows.item(i).Name);
+			$('#leaderboardTbl tbody').append('<tr><td>' +
+					i+1 +
+					'</td><td>' +
+					result.rows.item(i).Name +
+					'</td><td>' +
+					result.rows.item(i).Score +
+					'</td></tr>');
+		}
+	}, errorCB);
 }
 
 
