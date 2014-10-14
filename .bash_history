@@ -128,3 +128,19 @@ git push origin master
 git add .
 git commit -m "perHoleTotal working"
 git push origin master
+git add .
+git add .
+git commit -m "updateLeaderboard saves and limits to top 5"
+git push origin master
+git add .
+git commit -m "displayLeaderboard loading, not displaying"
+git push origin master
+git add .
+git commit -m "displayLeaderboard showing values correctly"
+git push origin master
+git add .
+git commit -m "reset leaderboard working"
+git push origin master
+git add .
+git commit -m "continue game is work in progress"
+git push origin master

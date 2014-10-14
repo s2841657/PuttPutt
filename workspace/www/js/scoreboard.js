@@ -19,10 +19,12 @@ function getHoleID(course, hole) {
 	return course.value + hole;
 }
 
+var playerNames = [];
+
 // Whether a score has been edited (and needs saving)
 var wasEdited;
 
-//
+// Whether the user has opted to continue an existing game or start a new one
 var willContinue;
 // This will hold the database
 var database;
@@ -113,11 +115,9 @@ $('#setupPlayBtn').click(function() {
 
 
 function setupNewScorecard() {
-	var players = getUniqueNames();
+	playerNames = getUniqueNames();
 	
-	$.each(players, function(index, value) {
-		addPlayerToScorecard(value);
-	});
+	addPlayersToScorecard();
 	
 	// Return whether names were entered 
 	return players.length > 0;
@@ -155,20 +155,25 @@ function getUniqueNames() {
 function setupExistingScorecard(tx) {
 	tx.executeSql('SELECT DISTINCT Name FROM Scorecard', [], 
 			function(tx, result) {
-				$.each(result, function(index, value) {
-					addPlayerToScorecard(value.Name);
-				});
+				playerNames = [];
+				for(var i = 0, len = result.rows.length; i < len; ++i) {
+					playerNames[i] = result.rows.item(i).Name;
+				}
+				
+				addPlayersToScorecard();
 			}, errorCB);
 }
 
 
 
-function addPlayerToScorecard(playerName) {
-	// Add the player to the scorecard
-	$('#perHoleTbl tbody').append('<tr><td><div class="playerLbl">' +
-			 playerName +
-			'</div></td><td><input type="text" class="scoreInput" /></td>' +
-			'<td><div class="totalLbl"></div></td></tr>');
+function addPlayersToScorecard() {
+	// Add each player to the scorecard
+	$.each(playerNames, function(index, value) {
+		$('#perHoleTbl tbody').append('<tr><td><div class="playerLbl">' +
+				value +
+				'</div></td><td><input type="text" class="scoreInput" /></td>' +
+				'<td><div class="totalLbl"></div></td></tr>');
+	});
 }
 
 
