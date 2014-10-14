@@ -364,10 +364,9 @@ $('.leaderboardBtn').click(function() {
 	var temp;
 	// When a new course is selected
 	if (leaderboardCourse !== (temp = courseFromName($(this).text())) && temp) {
-		alert(temp.name);
 		leaderboardCourse = temp;
 		// Clear the table
-		$('#leaderboardTbl tbody').remove();
+		$('#leaderboardTbl tbody').empty();
 	
 		// Get the high scores from the database
 		database.transaction(displayLeaderboardPage, errorCB); 
@@ -378,14 +377,20 @@ $('.leaderboardBtn').click(function() {
 
 function displayLeaderboardPage(tx) {
 	tx.executeSql('SELECT Name, Score FROM Leaderboard WHERE Course = "'+ leaderboardCourse.code +'" ORDER BY Score', [], function(tx, result) {
-		for (var i = 0, len = result.rows.length; i < len; ++i) {
-			alert (result.rows.item(i).Name);
+		for (var i = 0, len = result.rows.length, prevScore = 0, place = 1, currentScore; i < len; ++i) {
+			
+			currentScore = result.rows.item(i).Score;
+			if (currentScore !== prevScore) {
+				place = i+1;
+			}
+			prevScore = currentScore;
+			
 			$('#leaderboardTbl tbody').append('<tr><td>' +
-					i+1 +
+					place +
 					'</td><td>' +
 					result.rows.item(i).Name +
 					'</td><td>' +
-					result.rows.item(i).Score +
+					currentScore +
 					'</td></tr>');
 		}
 	}, errorCB);
