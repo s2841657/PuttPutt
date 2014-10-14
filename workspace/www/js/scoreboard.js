@@ -74,7 +74,6 @@ $('#homePlayBtn').click(function() {
 // Check whether a game is already in progress
 function inProgressQuery(tx) {
 	tx.executeSql('SELECT HoleID FROM Scorecard', [], promptToContinue, errorCB);
-	
 }
 
 
@@ -84,8 +83,8 @@ function promptToContinue(tx, result) {
 	
 	// NEED TO IMPLEMENT DIALOG BOX
 	if (result.rows.length > 0 &&
-			(selectedCourse = courseFromholeID(result.rows.item(0).HoleID))
-			) {
+			(selectedCourse = courseFromholeID(result.rows.item(0).HoleID)) &&
+			confirm('Do you want to continue your previous game?')) {
 		willContinue = true;
 	}
 }
@@ -120,7 +119,7 @@ function setupNewScorecard() {
 	addPlayersToScorecard();
 	
 	// Return whether names were entered 
-	return players.length > 0;
+	return playerNames.length > 0;
 }
 
 
@@ -373,10 +372,14 @@ function updateLeaderboard(tx) {
 
 
 $('#resetLeaderboardBtn').click(function() {
-	database.transaction(function(tx){
-		tx.executeSql('DROP TABLE IF EXISTS Leaderboard');
-		tx.executeSql('CREATE TABLE IF NOT EXISTS Leaderboard (Name TEXT, Course TEXT, Score INTEGER)');
-	}, errorCB);
+	if (confirm('Are you sure you want to reset the leaderboards?\nThis can\'t be undone!')) {
+		database.transaction(function(tx){
+			tx.executeSql('DROP TABLE IF EXISTS Leaderboard');
+			tx.executeSql('CREATE TABLE IF NOT EXISTS Leaderboard (Name TEXT, Course TEXT, Score INTEGER)');
+		}, errorCB, function() {
+			alert('The leaderboards have been reset!');
+		});
+	}
 });
 
 
