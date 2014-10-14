@@ -359,6 +359,14 @@ function updateLeaderboard(tx) {
 
 
 
+$('#resetLeaderboardBtn').click(function() {
+	database.transaction(function(tx){
+		tx.executeSql('DROP TABLE IF EXISTS Leaderboard');
+		tx.executeSql('CREATE TABLE IF NOT EXISTS Leaderboard (Name TEXT, Course TEXT, Score INTEGER)');
+	}, errorCB);
+});
+
+
 // Display the high scores for each course
 $('.leaderboardBtn').click(function() {
 	var temp;
