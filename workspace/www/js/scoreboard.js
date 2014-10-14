@@ -330,8 +330,9 @@ function saveCurrentHole(tx) {
 
 $('#holeInfo').click(function() {
 	var imgLocation = 'img/hole/' + getHoleID(selectedCourse, currentHole) + '.gif';
+	$('#holeOverlayImg').html('<img src="'+ imgLocation +'"></img>');
 	
-	$('#holeOverlay').html('<img src="'+ imgLocation +'"></img>');
+	$('#crazyGolfLbl').text(getCrazyGolfText());
 	
 	holeInOneVisible(true);
 });
@@ -459,6 +460,72 @@ function courseFromholeID(id) {
 		course = null;
 	}
 	return course;
+}
+
+
+
+function getCrazyGolfText() {
+	var text;
+	switch(currentHole) {
+		case 1:
+			text = "Play this hole right handed";
+			break;
+		case 2:
+			text = "Use your right foot to putt the ball";
+			break;
+		case 3:
+			text = "Putt facing backwards through your legs";
+			break;
+		case 4:
+			text = "Putt one handed using only your right hand";
+			break;
+		case 5:
+			text = "Play this hole like a snooker shot";
+			break;
+		case 6:
+			text = "Play this hole left handed";
+			break;
+		case 7:
+			text = "Pick up your ball and bowl your first shot";
+			break;
+		case 8:
+			text = "Close your eyes for your first shot. Every miss counts!";
+			break;
+		case 9:
+			text = "Play hockey, if your ball leaves your putter that is 1 shot";
+			break;
+		case 10:
+			text = "Play this hole with your putter turned backwards";
+			break;
+		case 11:
+			text = "Stand on 1 leg for all shots";
+			break;
+		case 12:
+			text = "Your ball cannot stop rolling. Count 1 shot every hit";
+			break;
+		case 13:
+			text = "Play this hole right handed";
+			break;
+		case 14:
+			text = "Everyone putts their first shot then swap balls to continue playing this hole";
+			break;
+		case 15:
+			text = "Make up your own (make sure it\'s crazy!)";
+			break;
+		case 16:
+			text = "Each shot must rebound off a bump board (1 stroke penalty)";
+			break;
+		case 17:
+			text = "Putt one handed using only your left hand";
+			break;
+		case 18:
+			text = "Everyone putts their first shot. Closest ball to the hole without going in wins a special prize"
+			break;
+		default:
+			text = "";
+			break;
+	}
+	return text;
 }
 
 

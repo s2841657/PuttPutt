@@ -106,11 +106,17 @@ Updated contributors
 		<div id="perHolePage" data-role="page">
 			<div data-role="header" class="header">
 				<div id="holeLbl">Hole Number</div>
-				<a data-icon="carat-l" data-iconpos="notext" href="#homePage"></a>
+				<a data-icon="home" data-iconpos="notext" href="#homePage"></a>
 				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
 			</div>
 			
-			<div id="holeOverlay"></div>
+			<div id="holeOverlay">
+				<div id="holeOverlayImg"></div>
+				<div id="crazyGolfDiv">
+					<img src="img/ballmarker.jpg" id="crazyGolfImg" />
+					<label id="crazyGolfLbl"></label>
+				</div>
+			</div>
 			
 			<table id="perHoleTbl" class="scoreCard">
 				<thead>
@@ -123,7 +129,7 @@ Updated contributors
 				<tbody>
 				</tbody>
 			</table>
-			
+
 			<div id="footerNav">
 				<a id="prevHole" href="#"><img src="img/arrowL.png" alt="" /></a>
 				<a id="holeInfo" href="#"><img src="img/info.png" alt="" /></a>

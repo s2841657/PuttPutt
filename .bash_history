@@ -144,3 +144,16 @@ git push origin master
 git add .
 git commit -m "continue game is work in progress"
 git push origin master
+git add .
+git commit -m "continue game is working, doesn't prompt"
+git push origin master
+git add .
+git add .
+git commit -m "prompts to confirm before continuing a previous game and before resetting the leaderboards"
+git push origin master
+git add .
+git commit -m "fixed some issues with loading the scorecard: made playerNames global and properly displayed the values when loading existing games"
+git push origin master
+git add .
+git commit -m "pre whole course page"
+git push origin master
