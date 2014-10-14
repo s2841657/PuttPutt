@@ -44,7 +44,11 @@ function onDeviceReady() {
 
 
 $('#homeLeaderboardBtn').click(function(){
-	if (!window.openDatabase) {
+	if (window.openDatabase) {
+		// Reset the leaderboard table
+		leaderboardCourse = null;
+		$('#leaderboardTbl tbody').empty();
+	} else {
 		alert ('Sorry, you don\'t have database support!');
 		return false;
 	}
@@ -315,7 +319,7 @@ function saveCurrentHole(tx) {
 		var name = $(this).find("td").eq(0).text();
 		var score = parseInt($(this).find("td").eq(1).find("input").val());
 		
-		if (score && !(score < 0 || score > 7)) {
+		if (!isNaN(score) && !(score < 0 || score > 7)) {
 			tx.executeSql('INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score) VALUES ('+holeID+', "'+name+'", '+score+')', [], null, errorCB);
 		}
 	});
