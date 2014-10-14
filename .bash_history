@@ -119,3 +119,12 @@ git push origin master
 git add .
 git commit -m "database saving scores"
 git push origin master
+git add .
+git commit -m "pre perHoleTotal"
+git push origin master
+git add .
+git commit -m "total summing everything"
+git push origin master
+git add .
+git commit -m "perHoleTotal working"
+git push origin master

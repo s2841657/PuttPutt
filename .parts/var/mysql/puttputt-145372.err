@@ -1522,3 +1522,109 @@ Killed
 2014-10-13 13:35:40 914 [Note] Event Scheduler: Loaded 0 events
 2014-10-13 13:35:40 914 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: ready for connections.
 Version: '5.6.13'  socket: '/tmp/mysql.sock'  port: 3306  Source distribution
+Killed
+141013 13:56:46 mysqld_safe Number of processes running now: 0
+141013 13:56:46 mysqld_safe mysqld restarted
+2014-10-13 13:56:49 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2014-10-13 13:56:49 986 [Note] Plugin 'FEDERATED' is disabled.
+2014-10-13 13:56:49 986 [Note] InnoDB: The InnoDB memory heap is disabled
+2014-10-13 13:56:49 986 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2014-10-13 13:56:49 986 [Note] InnoDB: Compressed tables use zlib 1.2.3
+2014-10-13 13:56:49 986 [Note] InnoDB: Using CPU crc32 instructions
+2014-10-13 13:56:49 986 [Note] InnoDB: Initializing buffer pool, size = 128.0M
+2014-10-13 13:56:49 986 [Note] InnoDB: Completed initialization of buffer pool
+2014-10-13 13:56:49 986 [Note] InnoDB: Highest supported file format is Barracuda.
+2014-10-13 13:56:49 986 [Note] InnoDB: The log sequence numbers 1626313 and 1626313 in ibdata files do not match the log sequence number 1626353 in the ib_logfiles!
+2014-10-13 13:56:49 986 [Note] InnoDB: Database was not shutdown normally!
+2014-10-13 13:56:49 986 [Note] InnoDB: Starting crash recovery.
+2014-10-13 13:56:49 986 [Note] InnoDB: Reading tablespace information from the .ibd files...
+2014-10-13 13:56:49 986 [Note] InnoDB: Restoring possible half-written data pages 
+2014-10-13 13:56:49 986 [Note] InnoDB: from the doublewrite buffer...
+2014-10-13 13:56:49 986 [Note] InnoDB: 128 rollback segment(s) are active.
+2014-10-13 13:56:49 986 [Note] InnoDB: Waiting for purge to start
+2014-10-13 13:56:49 986 [Note] InnoDB: 5.6.13 started; log sequence number 1626353
+2014-10-13 13:56:49 986 [Note] RSA private key file not found: /home/action/.parts/var/mysql//private_key.pem. Some authentication plugins will not work.
+2014-10-13 13:56:49 986 [Note] RSA public key file not found: /home/action/.parts/var/mysql//public_key.pem. Some authentication plugins will not work.
+2014-10-13 13:56:49 986 [Note] Server hostname (bind-address): '*'; port: 3306
+2014-10-13 13:56:49 986 [Note] IPv6 is available.
+2014-10-13 13:56:49 986 [Note]   - '::' resolves to '::';
+2014-10-13 13:56:49 986 [Note] Server socket created on IP: '::'.
+2014-10-13 13:56:50 986 [Note] Event Scheduler: Loaded 0 events
+2014-10-13 13:56:50 986 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: ready for connections.
+Version: '5.6.13'  socket: '/tmp/mysql.sock'  port: 3306  Source distribution
+2014-10-13 16:00:33 986 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: Normal shutdown
+
+2014-10-13 16:00:33 986 [Note] Giving 0 client threads a chance to die gracefully
+2014-10-13 16:00:33 986 [Note] Event Scheduler: Purging the queue. 0 events
+2014-10-13 16:00:33 986 [Note] Shutting down slave threads
+2014-10-13 16:00:33 986 [Note] Forcefully disconnecting 0 remaining clients
+2014-10-13 16:00:33 986 [Note] Binlog end
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'partition'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'ARCHIVE'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'PERFORMANCE_SCHEMA'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_DATAFILES'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_TABLESPACES'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_FOREIGN_COLS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_FOREIGN'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_FIELDS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_COLUMNS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_INDEXES'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_TABLESTATS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_SYS_TABLES'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_FT_INDEX_TABLE'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_FT_INDEX_CACHE'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_FT_CONFIG'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_FT_BEING_DELETED'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_FT_DELETED'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_FT_DEFAULT_STOPWORD'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_METRICS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_BUFFER_POOL_STATS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_BUFFER_PAGE_LRU'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_BUFFER_PAGE'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_CMP_PER_INDEX_RESET'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_CMP_PER_INDEX'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_CMPMEM_RESET'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_CMPMEM'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_CMP_RESET'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_CMP'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_LOCK_WAITS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_LOCKS'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'INNODB_TRX'
+2014-10-13 16:00:33 986 [Note] Shutting down plugin 'InnoDB'
+2014-10-13 16:00:33 986 [Note] InnoDB: FTS optimize thread exiting.
+2014-10-13 16:00:33 986 [Note] InnoDB: Starting shutdown...
+2014-10-13 16:00:34 986 [Note] InnoDB: Shutdown completed; log sequence number 1626363
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'BLACKHOLE'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'MyISAM'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'MEMORY'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'CSV'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'MRG_MYISAM'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'sha256_password'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'mysql_old_password'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'mysql_native_password'
+2014-10-13 16:00:34 986 [Note] Shutting down plugin 'binlog'
+2014-10-13 16:00:34 986 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: Shutdown complete
+
+141013 16:00:34 mysqld_safe mysqld from pid file /home/action/.parts/var/mysql/puttputt-145372.pid ended
+141014 02:43:37 mysqld_safe Starting mysqld daemon with databases from /home/action/.parts/var/mysql
+2014-10-14 02:43:40 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2014-10-14 02:43:40 476 [Note] Plugin 'FEDERATED' is disabled.
+2014-10-14 02:43:40 476 [Note] InnoDB: The InnoDB memory heap is disabled
+2014-10-14 02:43:40 476 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2014-10-14 02:43:40 476 [Note] InnoDB: Compressed tables use zlib 1.2.3
+2014-10-14 02:43:40 476 [Note] InnoDB: Using CPU crc32 instructions
+2014-10-14 02:43:40 476 [Note] InnoDB: Initializing buffer pool, size = 128.0M
+2014-10-14 02:43:41 476 [Note] InnoDB: Completed initialization of buffer pool
+2014-10-14 02:43:41 476 [Note] InnoDB: Highest supported file format is Barracuda.
+2014-10-14 02:43:41 476 [Note] InnoDB: 128 rollback segment(s) are active.
+2014-10-14 02:43:41 476 [Note] InnoDB: Waiting for purge to start
+2014-10-14 02:43:41 476 [Note] InnoDB: 5.6.13 started; log sequence number 1626363
+2014-10-14 02:43:41 476 [Note] RSA private key file not found: /home/action/.parts/var/mysql//private_key.pem. Some authentication plugins will not work.
+2014-10-14 02:43:41 476 [Note] RSA public key file not found: /home/action/.parts/var/mysql//public_key.pem. Some authentication plugins will not work.
+2014-10-14 02:43:41 476 [Note] Server hostname (bind-address): '*'; port: 3306
+2014-10-14 02:43:41 476 [Note] IPv6 is available.
+2014-10-14 02:43:41 476 [Note]   - '::' resolves to '::';
+2014-10-14 02:43:41 476 [Note] Server socket created on IP: '::'.
+2014-10-14 02:43:41 476 [Note] Event Scheduler: Loaded 0 events
+2014-10-14 02:43:41 476 [Note] /home/action/.parts/packages/mysql/5.6.13/bin/mysqld: ready for connections.
+Version: '5.6.13'  socket: '/tmp/mysql.sock'  port: 3306  Source distribution

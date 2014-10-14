@@ -7,8 +7,6 @@ var COURSES = {
 // The course which is being played (eg: COURSES.FUNRUN)
 var selectedCourse;
 
-var debug = 0;
-
 var currentHole;
 // This is the unique id of each hole
 function getHoleID(course, hole) {
@@ -23,11 +21,13 @@ var database;
 document.addEventListener('deviceready', onDeviceReady, false);
 
 
-// device APIs are available
+// Device APIs are available
 function onDeviceReady() {
-	//alert('onDeviceReady');
 	database = window.openDatabase('Scorecard', '1.0', 'Putt Putt Scores', 200000);
-	// alert(''+database);
+	// Ensure the leaderboard is available
+	database.transaction(function(tx){
+		tx.executeSql('CREATE TABLE IF NOT EXISTS Leaderboard (Name TEXT, Course TEXT, Score INTEGER)');
+	}, errorCB);
 	return false;
 }
 
@@ -36,6 +36,15 @@ $('#homePlayBtn').click(function() {
 		// Load an existing game
 		database.transaction(inProgressQuery, errorCB, promptToContinue);
 	} else {
+		alert ('Sorry, you don\'t have database support!');
+		return false;
+	}
+});
+
+
+
+$('#homeLeaderboardBtn').click(function(){
+	if (!window.openDatabase) {
 		alert ('Sorry, you don\'t have database support!');
 		return false;
 	}
@@ -189,9 +198,7 @@ function updatePerHolePage(hole) {
 		willUpdate = ((hole = 1) != currentHole);
 	} else if (hole > 18) {
 		if (hole == 19) {
-			alert('leaderboard');
-			//updateLeaderboard();
-			//window.location = '#wholeCoursePage';
+			database.transaction(updateLeaderboard, errorCB);
 		}
 		
 		hole = 18;
@@ -241,7 +248,6 @@ function displayPerHoleScores(tx) {
 					if (rowIndex != -1) {
 						tblRows.eq(rowIndex).find('.scoreInput').val(results.rows.item(i).Score);
 					}
-					if(debug == 1) alert("The score for " + results.rows.item(i).Name + " is " + results.rows.item(i).Score);
 		        }				
 
 			}, errorCB);
@@ -297,16 +303,8 @@ function saveCurrentHole(tx) {
 
 
 
-function updateLeaderboard() {
-	
-}
-
-
-
 $('#holeInfo').click(function() {
 	var imgLocation = 'img/hole/' + getHoleID(selectedCourse, currentHole) + '.gif';
-	
-	alert(''+imgLocation);
 	
 	$('#holeOverlay').html('<img src="'+ imgLocation +'"></img>');
 	
@@ -334,6 +332,23 @@ function holeInOneVisible(diagramVisible) {
 		$('#perHoleTbl').show();
 		$('#footerNav').show();
 	}
+}
+
+
+
+function updateLeaderboard(tx) {
+	$('#perHoleTbl tbody tr').each(function(index, value) {
+		name = $(this).find('.playerLbl').eq(0).text();
+		score = parseInt($(this).find('.totalLbl').eq(0).text());
+		
+		tx.executeSql('INSERT INTO Leaderboard (Name, Course, Score) Values ("'+name+'", "'+selectedCourse.code+'",'+score+')');
+	});
+	
+	var limitQry = 'DELETE FROM Leaderboard WHERE RowID NOT IN '+
+			'(SELECT * FROM (SELECT RowID FROM Leaderboard WHERE Course = "' + selectedCourse.code + '" ORDER BY Score ASC LIMIT 5) '+
+			'UNION SELECT RowID FROM Leaderboard WHERE Course != "' + selectedCourse.code + '")';
+	
+	tx.executeSql(limitQry);
 }
 
 
@@ -374,7 +389,7 @@ function courseFromholeID(id) {
 
 // Database transaction error callback
 function errorCB(tx, err) {
-	alert('Error processing SQL: '+err.code);
+	alert('Error processing SQL - Code: '+err.code+'\n'+err);
 	
 	// If a console is available
 	if (window.console && window.console.log) {
