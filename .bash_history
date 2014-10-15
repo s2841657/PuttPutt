@@ -157,3 +157,8 @@ git push origin master
 git add .
 git commit -m "pre whole course page"
 git push origin master
+git add .
+git add .
+git commit -m "pre whole course page"
+git push origin master
+git push origin master

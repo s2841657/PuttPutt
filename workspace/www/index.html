@@ -118,23 +118,48 @@ Updated contributors
 				</div>
 			</div>
 			
-			<table id="perHoleTbl" class="scoreCard">
+			<div id="holeDiv">
+				<table id="perHoleTbl" class="scoreCard">
+					<thead>
+						<tr>
+						<th>Name</th>
+						<th>Score</th>
+						<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+
+				<div class="footerNav">
+					<a id="prevHole"><img src="img/arrowL.png" alt="" /></a>
+					<a id="holeInfo"><img src="img/info.png" alt="" /></a>
+					<a id="fullScorecard" href="#wholeCoursePage"><img src="img/scorecard.png" alt="" /></a>
+					<a id="nextHole"><img src="img/arrowR.png" alt="" /></a>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div id="wholeCoursePage" data-role="page">
+			<div data-role="header" class="header">
+				<div id="nineLbl">Nine</div>
+				<a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
+			</div>
+			
+			<table id="wholeCourseTbl" class="scoreCard">
 				<thead>
-					<tr>
-					<th>Name</th>
-					<th>Score</th>
-					<th>Total</th>
-					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
-
-			<div id="footerNav">
-				<a id="prevHole" href="#"><img src="img/arrowL.png" alt="" /></a>
-				<a id="holeInfo" href="#"><img src="img/info.png" alt="" /></a>
-				<a id="fullScorecard" href="#"><img src="img/scorecard.png" alt="" /></a>
-				<a id="nextHole" href="#"><img src="img/arrowR.png" alt="" /></a>
+			
+			<div class="footerNav">
+				<a id="prevNine"><img src="img/arrowL.png" alt="" /></a>
+				<a></a><a></a>
+				<a id="nextNine"><img src="img/arrowR.png" alt="" /></a>
 				<div class="clear"></div>
 			</div>
 		</div>
@@ -163,7 +188,7 @@ Updated contributors
 			<div data-role="header" class="header">
 				Leaderboards
 				<a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
-				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
+				<a data-icon="gear" data-iconpos="notext" href="#settingsPage" id="leaderboardSettings"></a>
 			</div>
             
             <div class="container">

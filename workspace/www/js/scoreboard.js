@@ -18,6 +18,8 @@ var currentHole;
 function getHoleID(course, hole) {
 	return course.value + hole;
 }
+// This will hold a value 1 or 2 for front- and back-nine respectively
+var currentNine;
 
 var playerNames = [];
 
@@ -33,11 +35,13 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 // Device APIs are available
 function onDeviceReady() {
-	database = window.openDatabase('Scorecard', '1.0', 'Putt Putt Scores', 200000);
-	// Ensure the leaderboard is available
+	database = window.openDatabase('Database', '1.0', 'Putt Putt Scores', 200000);
+	// Ensure the tables are available
 	database.transaction(function(tx){
 		tx.executeSql('CREATE TABLE IF NOT EXISTS Leaderboard (Name TEXT, Course TEXT, Score INTEGER)');
+		tx.executeSql('CREATE TABLE IF NOT EXISTS Scorecard (HoleID INTEGER NOT NULL, Name TEXT NOT NULL, Score INTEGER, PRIMARY KEY (HoleID, Name))');
 	}, errorCB);
+	
 	return false;
 }
 
@@ -52,6 +56,20 @@ $('#homeLeaderboardBtn').click(function(){
 		alert ('Sorry, you don\'t have database support!');
 		return false;
 	}
+});
+
+
+
+/*
+	The leaderboard should be empty until a course is selected.
+	The home button will clear it,
+	and the end game screen will display the current course.
+	Settings are the only other external link on or to this page.
+*/
+$('#leaderboardSettings').click(function(){
+	// Clear the table
+	leaderboardCourse = null;
+	$('#leaderboardTbl tbody').empty();
 });
 
 
@@ -207,6 +225,10 @@ $('#nextHole').click(function() {
 
 function updatePerHolePage(hole) {
 	holeInOneVisible(false);
+	if(!$('#perHoleTbl tbody tr').length) {
+		window.location = '#homePage';
+	}
+	
 	if (wasEdited) {
 		database.transaction(saveCurrentHole, errorCB, function() {
 			wasEdited = false;
@@ -278,6 +300,7 @@ function displayPerHoleScores(tx) {
 			}, errorCB);
 }
 
+function bleh(tx, result, words){alert(words);}
 
 function displayPerHoleTotal(tx) {
 	tx.executeSql('SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name', [], function(tx, result) {
@@ -340,7 +363,6 @@ $('#holeInfo').click(function() {
 
 
 $('#holeOverlay').click(function(){
-	$(this).hide();
 	holeInOneVisible(false);
 });
 
@@ -349,14 +371,10 @@ $('#holeOverlay').click(function(){
 function holeInOneVisible(diagramVisible) {
 	if (diagramVisible) {
 		$('#holeOverlay').show();
-		
-		$('#perHoleTbl').hide();
-		$('#footerNav').hide();
+		$('#holeDiv').hide();
 	} else {
 		$('#holeOverlay').hide();
-		
-		$('#perHoleTbl').show();
-		$('#footerNav').show();
+		$('#holeDiv').show();
 	}
 }
 
@@ -426,6 +444,68 @@ function displayLeaderboardPage(tx) {
 					'</td></tr>');
 		}
 	}, errorCB);
+}
+
+
+
+$('#fullScorecard').click(function(){
+	var nine;
+	if (currentHole <= 9) {
+		// Display the front-nine
+		nine = 1;
+	} else {
+		// Back-nine
+		nine = 2;
+	}
+	displayWholeCoursePage(nine);
+});
+
+
+
+$('#prevNine').click(function(){
+	displayWholeCoursePage(1);
+});
+
+
+
+$('#nextNine').click(function(){
+	displayWholeCoursePage(2);
+});
+
+
+
+function displayWholeCoursePage(nine) {
+	var lblTxt;
+	if (1 === nine) {
+		lblTxt = 'Front Nine';
+	} else {
+		lblTxt = 'Back Nine';
+		nine = 2;
+	}
+	
+	if (nine !== currentNine) {
+		currentNine = nine;
+		$('#nineLbl').text(lblTxt);
+		displayWholeCourseTable();
+	}
+}
+
+
+
+function displayWholeCourseTable() {
+	$('#wholeCourseTbl tr').empty();
+	
+	var tblHead = '<tr><th>Name</th>'
+	for (var i = (currentNine === 1 ? 1 : 10); i <= currentNine * 9; ++i) {
+		tblHead += '<th>' + i + '</th>';
+	}
+	tblHead += '<th>Total</th></tr>';
+	
+	$('#wholeCourseTbl thead').append(tblHead);
+
+	$.each(playerNames, function(index, value){
+		
+	});
 }
 
 
@@ -532,7 +612,7 @@ function getCrazyGolfText() {
 
 // Database transaction error callback
 function errorCB(tx, err) {
-	alert('Error processing SQL - Code: '+err.code+'\n'+err);
+	alert('Error processing SQL - Code: '+err.code);
 	
 	// If a console is available
 	if (window.console && window.console.log) {

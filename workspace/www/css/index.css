@@ -284,7 +284,7 @@ table tbody {
 
 
 /* footer */
-#footerNav {
+.footerNav {
     position: fixed;
     z-index: 100; 
     bottom: 0; 
@@ -292,28 +292,28 @@ table tbody {
     width: 100%;
 }
 
-#footerNav a {
+.footerNav a {
     display: inline-block;
     width: 25%;
     padding: 5vh 0;
     float: left;
 }
 
-#footerNav a img {
+.footerNav a img {
     width: 30%;
     height: auto;
 }
 
-#footerNav #prevHole {
+.footerNav #prevHole, .footerNav #prevNine {
     background: #CD2B25;
 }
-#footerNav #holeInfo {
+.footerNav #holeInfo {
     background: #FFBB1E;
 }
-#footerNav #fullScorecard {
+.footerNav #fullScorecard {
     background: #39B54A;
 }
-#footerNav #nextHole {
+.footerNav #nextHole, .footerNav #nextNine {
     background: #29ABE2;
 }
 
