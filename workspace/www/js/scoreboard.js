@@ -503,9 +503,41 @@ function displayWholeCourseTable() {
 	
 	$('#wholeCourseTbl thead').append(tblHead);
 
+	database.transaction(displayWholeCourseScores, errorCB)
+}
+
+
+
+function displayWholeCourseScores(tx) {
 	$.each(playerNames, function(index, value){
+		$('#wholeCourseTbl tbody').append('<tr><td>' + value + '</td>');
 		
+		var qry = 'SELECT Name, Score, HoleID FROM Scorecard WHERE Name = "' + value + '" AND HoleID';
+		if (1 === currentNine) {
+			qry += ' <= ';
+		} else {
+			qry += ' > ';
+		}
+		qry += getHoleID(selectedCourse, 9) + ' ORDER BY HoleID ASC';
+		
+		tx.executeSql(qry, [], displayWholeCoursePlayerScore, errorCB);
 	});
+}
+
+
+
+function displayWholeCoursePlayerScore(tx, result) {
+	for (var index = 0, length = result.rows.length, cellHole = (1 === currentNine ? getHoleID(selectedCourse, 1) : getHoleID(selectedCourse, 10)); index < length; ++index, ++cellHole) {
+		$('#wholeCourseTbl tbody').append('<td>');
+		
+		if (result.rows.item(index).HoleID === cellHole) {
+			$('#wholeCourseTbl tbody').append(''+result.rows.item(index).Score);
+		}
+		
+		$('#wholeCourseTbl tbody').append('</td>');
+	}
+	
+	$('#wholeCourseTbl tbody').append('</tr>');
 }
 
 
