@@ -234,6 +234,7 @@ function updatePerHolePage(hole) {
 	if (wasEdited) {
 		database.transaction(saveCurrentHole, errorCB, function() {
 			wasEdited = false;
+			currentNine = null;
 			database.transaction(displayPerHoleTotal, errorCB, function() {
 				updatePerHolePage(hole);
 			});
@@ -280,25 +281,24 @@ function displayPerHoleScores(tx) {
 		var holeID = getHoleID(selectedCourse, currentHole);
 		//alert("Current hole " + current_hole);
 		tx.executeSql('SELECT Name, Score, HoleID FROM Scorecard WHERE HoleID='+holeID, [],
-			function(tx, results) {
+			function(tx, result) {
 				var rowIndex;
-		        var len = results.rows.length;
+		        var len = result.rows.length;
 		        var tblRows = $('#perHoleTbl tbody tr');
 		        for (var i=0; i<len; i++){
 		        	rowIndex = -1;
 		        	var players = $('.playerLbl');
 		        	for(var j = 0; j < players.length; j++) {
-		        		if($('.playerLbl').eq(j).text() === results.rows.item(i).Name) {
+		        		if($('.playerLbl').eq(j).text() === result.rows.item(i).Name) {
 		        			rowIndex = j;
 		        			break;
 		        		}
 		        	}
 		        
 					if (rowIndex != -1) {
-						tblRows.eq(rowIndex).find('.scoreInput').val(results.rows.item(i).Score);
+						tblRows.eq(rowIndex).find('.scoreInput').val(result.rows.item(i).Score);
 					}
-		        }				
-
+		        }
 			}, errorCB);
 }
 
@@ -351,6 +351,7 @@ function populateNewScorecard(tx) {
 
 function saveCurrentHole(tx) {
 	var holeID = getHoleID(selectedCourse, currentHole);
+	
 	$('#perHoleTbl tbody tr').each(function(index, value) {
 		var name = $(this).find("td").eq(0).text();
 		var score = parseInt($(this).find("td").eq(1).find("input").val());
@@ -359,6 +360,7 @@ function saveCurrentHole(tx) {
 			tx.executeSql('INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score) VALUES ('+holeID+', "'+name+'", '+score+')', [], null, errorCB);
 		}
 	});
+
 	return;
 }
 
@@ -499,6 +501,10 @@ function displayWholeCoursePage(nine) {
 	if (nine !== currentNine) {
 		currentNine = nine;
 		$('#nineLbl').text(lblTxt);
+		
+		$('#wholeCourseTbl thead').empty();
+		$('#wholeCourseTbl tbody').empty();
+	
 		displayWholeCourseTable();
 	}
 }
@@ -506,9 +512,6 @@ function displayWholeCoursePage(nine) {
 
 
 function displayWholeCourseTable() {
-	$('#wholeCourseTbl thead').empty();
-	$('#wholeCourseTbl tbody').empty();
-	
 	var tblHead = '<tr><th>Name</th>'
 	for (var i = (currentNine === 1 ? 1 : 10); i <= currentNine * 9; ++i) {
 		tblHead += '<th>' + i + '</th>';
@@ -527,7 +530,7 @@ function displayWholeCourseTable() {
 function displayWholeCourseScores(tx) {
 	var qry;
 	$.each(playerNames, function(index, value){
-		qry = 'SELECT Name, Score, HoleID FROM Scorecard WHERE Name = "' + value + '" AND HoleID';
+		qry = 'SELECT Name, Score FROM Scorecard WHERE Name = "' + value + '" AND HoleID';
 		
 		if (1 === currentNine) {
 			qry += ' <= ';
@@ -545,17 +548,41 @@ function displayWholeCourseScores(tx) {
 function displayWholeCoursePlayerScore(tx, result) {
 	var rowHTML = '<tr><td class="playerLbl">' + result.rows.item(0).Name + '</td>';
 	
-	for(var cellHole = (1 === currentNine ? getHoleID(selectedCourse, 1) : getHoleID(selectedCourse, 10)),
-			maxHole = (1 === currentNine ? getHoleID(selectedCourse, 9) : getHoleID(selectedCourse, 18));
-			cellHole <= maxHole;
-			++cellHole) {
-		rowHTML += '<td>'+cellHole;
-		
-		rowHTML += '</td>';
+	for(var index = 0, length = result.rows.length; index < length;	++index) {
+		rowHTML += '<td>' + result.rows.item(index).Score + '</td>';
 	}
 	
 	rowHTML += '<td class="totalLbl"></td></tr>';
+	
 	$('#wholeCourseTbl tbody').append(rowHTML);
+}
+
+
+
+function displayWholeCourseTotals(tx) {
+	tx.executeSql("SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name", [], function(tx, result){
+		var rowIndex;
+		var qryLength = result.rows.length;
+
+		var tblRows = $('#wholeCourseTbl tbody tr');
+		var players = tblRows.find('.playerLbl');
+		var playerLength = players.length;
+
+		for (var i=0; i < qryLength; ++i) {
+			rowIndex = -1;
+
+			for (var j=0; j < playerLength; ++j) {
+				if (players.eq(j).text() === result.rows.item(i).Name) {
+					rowIndex = j;
+					break;
+				}
+			}
+
+			if (-1 != rowIndex) {
+				tblRows.eq(rowIndex).find('.totalLbl').text(result.rows.item(i).Total);
+			}
+		}
+	}, errorCB);
 }
 
 
