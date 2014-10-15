@@ -162,3 +162,25 @@ git add .
 git commit -m "pre whole course page"
 git push origin master
 git push origin master
+git add .
+git commit -m "pre whole course page"
+git push origin master
+git add .
+git commit -m "wholeCourse retrieves values, displays incorrectly"
+git push origin master
+git push origin master
+git add .
+git commit -m "initialize scorecard on newgame"
+git add .
+git commit -m "whole course scorecard working"
+git push origin master
+git add .
+git commit -m "refactored totaling"
+git push origin master
+git add .
+git commit -m ""
+git commit -m "minor changes"
+git push origin master
+git add .
+git commit -m "minor changes"
+git push origin master

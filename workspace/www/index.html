@@ -119,7 +119,7 @@ Updated contributors
 			</div>
 			
 			<div id="holeDiv">
-				<table id="perHoleTbl" class="scoreCard">
+				<table id="perHoleTbl" class="score">
 					<thead>
 						<tr>
 						<th>Name</th>
@@ -196,7 +196,7 @@ Updated contributors
                 <a data-role="button" data-icon="star" data-theme="a" class="leaderboardBtn">Fun Run</a>
                 <a data-role="button" data-icon="star" data-theme="b" class="leaderboardBtn">Jungle Trail</a>
                 <a data-role="button" data-icon="star" data-theme="d" class="leaderboardBtn">Waterways Cove</a>
-                <table id="leaderboardTbl">
+                <table id="leaderboardTbl" class="score">
                     <thead>
                         <tr>
                             <td style="width: 25%">#</td>
@@ -233,16 +233,44 @@ Updated contributors
 			</div>
 			<div data-role="content">
 				<h5>
-					Open 9am-10pm
+					<p>Open 9am-10pm</p>
 					<p>Everyday and night*</p>
 					<p>*Anzac day from 1:30pm. Closed Christmas Day only.</p>
 					<p>2492 Gold coast Hwy Mermaid Beach</p>
 					<p>Phone Number: <a href="tel:0755753381">07 55753381</a></p>
 					<p><a href="http://puttputtgolf.com.au">Visit our website!</a></p>
-					<p><span class="socialShare"> Social </span></p>
-          
 				</h5>
 			</div>
+			<p style="font-weight:bold">Social Media<span class="socialShare"></span></p>
+		</div>
+    
+    <div id="roundCompletePage" data-role="page">
+			<div data-role="header" class="header">
+				Round Complete
+				<a data-icon="home" data-iconpos="notext" href="#homePage"></a>
+				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
+			</div>
+			<div data-role="content">
+				<table id="roundCompleteTbl" class="score">
+					<thead>
+						<tr>
+							<th style="width: 20%">#</th>
+							<th style="width: 40%">Player</th>
+							<th style="width: 20%">Hole in Ones</th>
+							<th style="width: 20%">Score</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				
+				<!--<a data-role="button" data-icon="star" data-theme="d">Share to Social Media</a>-->
+				<a data-role="button" data-icon="star" data-theme="b" id="roundCompleteScorecardBtn" href="#wholeCoursePage">View Full Scorecard</a>
+				<a data-role="button" data-icon="star" data-theme="a" id="roundCompleteLeaderboardBtn">View Leaderboards</a>
+				<a data-role="button" data-icon="star" data-theme="d" id="feedbackBtn" href="#feedback">Give Feedback</a>
+				<a data-role="button" data-icon="back" data-theme="c" href="#setupPage1">Play Again</a>
+			</div>
+			<p style="font-weight:bold">Share to Social Media<span class="socialShare"></span></p>
 		</div>
 		
 		
@@ -365,7 +393,7 @@ Updated contributors
 						<label for="No">No</label>
 						
 						<!-- Feedback message -->
-						<label>Additional comments<br> or suggestions?</label>
+						<label>Additional comments<br /> or suggestions?</label>
 						<textarea id="msg" name="msg" cols="9" rows="9" placeholder="Have any more feedback? Please leave us a message here, we would love to hear it!"></textarea>
 						<!-- Button -->
 						<label></label>

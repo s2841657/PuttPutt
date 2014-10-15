@@ -248,7 +248,9 @@ function updatePerHolePage(hole) {
 		willUpdate = ((hole = 1) != currentHole);
 	} else if (hole > 18) {
 		if (hole == 19) {
-			database.transaction(updateLeaderboard, errorCB);
+			database.transaction(updateLeaderboard, errorCB, function(){
+				window.location = "#roundCompletePage";
+			});
 		}
 		
 		hole = 18;
@@ -470,6 +472,26 @@ function displayLeaderboardPage(tx) {
 
 
 
+$('#roundCompleteLeaderboardBtn').click(function(){
+	leaderboardCourse = temp;
+	// Clear the table
+	$('#leaderboardTbl tbody').empty();
+
+	// Get the high scores from the database
+	database.transaction(displayLeaderboardPage, errorCB, function(){
+		window.location = '#leaderboardsPage';
+	}); 
+});
+
+
+
+$('#roundCompleteScorecardBtn').click(function(){
+	currentNine = null;
+	displayWholeCoursePage(1);
+});
+
+
+
 $('#fullScorecard').click(function(){
 	var nine;
 	if (currentHole <= 9) {
@@ -567,7 +589,7 @@ function displayWholeCoursePlayerScore(tx, result) {
 
 
 function displayWholeCourseTotals(tx) {
-	tx.executeSql("SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name", [], function(tx, result){
+	tx.executeSql('SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name', [], function(tx, result){
 		displayTotal(result, '#wholeCourseTbl', '.playerLbl', '.totalLbl');
 	}, errorCB);
 }
@@ -612,61 +634,61 @@ function getCrazyGolfText() {
 	var text;
 	switch(currentHole) {
 		case 1:
-			text = "Play this hole right handed";
+			text = 'Play this hole right handed';
 			break;
 		case 2:
-			text = "Use your right foot to putt the ball";
+			text = 'Use your right foot to putt the ball';
 			break;
 		case 3:
-			text = "Putt facing backwards through your legs";
+			text = 'Putt facing backwards through your legs';
 			break;
 		case 4:
-			text = "Putt one handed using only your right hand";
+			text = 'Putt one handed using only your right hand';
 			break;
 		case 5:
-			text = "Play this hole like a snooker shot";
+			text = 'Play this hole like a snooker shot';
 			break;
 		case 6:
-			text = "Play this hole left handed";
+			text = 'Play this hole left handed';
 			break;
 		case 7:
-			text = "Pick up your ball and bowl your first shot";
+			text = 'Pick up your ball and bowl your first shot';
 			break;
 		case 8:
-			text = "Close your eyes for your first shot. Every miss counts!";
+			text = 'Close your eyes for your first shot. Every miss counts!';
 			break;
 		case 9:
-			text = "Play hockey, if your ball leaves your putter that is 1 shot";
+			text = 'Play hockey, if your ball leaves your putter that is 1 shot';
 			break;
 		case 10:
-			text = "Play this hole with your putter turned backwards";
+			text = 'Play this hole with your putter turned backwards';
 			break;
 		case 11:
-			text = "Stand on 1 leg for all shots";
+			text = 'Stand on 1 leg for all shots';
 			break;
 		case 12:
-			text = "Your ball cannot stop rolling. Count 1 shot every hit";
+			text = 'Your ball cannot stop rolling. Count 1 shot every hit';
 			break;
 		case 13:
-			text = "Play this hole right handed";
+			text = 'Play this hole right handed';
 			break;
 		case 14:
-			text = "Everyone putts their first shot then swap balls to continue playing this hole";
+			text = 'Everyone putts their first shot then swap balls to continue playing this hole';
 			break;
 		case 15:
-			text = "Make up your own (make sure it\'s crazy!)";
+			text = 'Make up your own (make sure it\'s crazy!)';
 			break;
 		case 16:
-			text = "Each shot must rebound off a bump board (1 stroke penalty)";
+			text = 'Each shot must rebound off a bump board (1 stroke penalty)';
 			break;
 		case 17:
-			text = "Putt one handed using only your left hand";
+			text = 'Putt one handed using only your left hand';
 			break;
 		case 18:
-			text = "Everyone putts their first shot. Closest ball to the hole without going in wins a special prize"
+			text = 'Everyone putts their first shot. Closest ball to the hole without going in wins a special prize';
 			break;
 		default:
-			text = "";
+			text = '';
 			break;
 	}
 	return text;
