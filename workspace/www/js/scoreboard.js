@@ -62,7 +62,7 @@ $('#homeLeaderboardBtn').click(function(){
 
 /*
 	The leaderboard should be empty until a course is selected.
-	The home button will clear it,
+	The button on the home page will clear it,
 	and the end game screen will display the current course.
 	Settings are the only other external link on or to this page.
 */
@@ -122,8 +122,10 @@ $('#setupPlayBtn').click(function() {
 	// Display the player names and scorecard
 	if (setupNewScorecard()) {
 		database.transaction(createNewScorecard, errorCB, function(){
-			wasEdited = false;
-			updatePerHolePage(1);
+			database.transaction(populateNewScorecard, errorCB, function(){
+				wasEdited = true;
+				updatePerHolePage(1);
+			});
 		});
 	} else {
 		alert ('Enter some player names.');
@@ -336,6 +338,17 @@ function createNewScorecard(tx) {
 
 
 
+function populateNewScorecard(tx) {
+	for (var currentHole = getHoleID(selectedCourse, 1), maxHole = getHoleID(selectedCourse, 18);
+			currentHole <= maxHole; ++currentHole) {
+		$.each(playerNames, function(index, value){
+			tx.executeSql('INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score) VALUES ('+currentHole+', "'+value+'", 0)', [], null, errorCB);
+		});
+	}
+}
+
+
+
 function saveCurrentHole(tx) {
 	var holeID = getHoleID(selectedCourse, currentHole);
 	$('#perHoleTbl tbody tr').each(function(index, value) {
@@ -493,7 +506,8 @@ function displayWholeCoursePage(nine) {
 
 
 function displayWholeCourseTable() {
-	$('#wholeCourseTbl tr').empty();
+	$('#wholeCourseTbl thead').empty();
+	$('#wholeCourseTbl tbody').empty();
 	
 	var tblHead = '<tr><th>Name</th>'
 	for (var i = (currentNine === 1 ? 1 : 10); i <= currentNine * 9; ++i) {
@@ -503,16 +517,18 @@ function displayWholeCourseTable() {
 	
 	$('#wholeCourseTbl thead').append(tblHead);
 
-	database.transaction(displayWholeCourseScores, errorCB)
+	database.transaction(displayWholeCourseScores, errorCB, function(){
+		database.transaction(displayWholeCourseTotals, errorCB);
+	});
 }
 
 
 
 function displayWholeCourseScores(tx) {
+	var qry;
 	$.each(playerNames, function(index, value){
-		$('#wholeCourseTbl tbody').append('<tr><td>' + value + '</td>');
+		qry = 'SELECT Name, Score, HoleID FROM Scorecard WHERE Name = "' + value + '" AND HoleID';
 		
-		var qry = 'SELECT Name, Score, HoleID FROM Scorecard WHERE Name = "' + value + '" AND HoleID';
 		if (1 === currentNine) {
 			qry += ' <= ';
 		} else {
@@ -527,17 +543,19 @@ function displayWholeCourseScores(tx) {
 
 
 function displayWholeCoursePlayerScore(tx, result) {
-	for (var index = 0, length = result.rows.length, cellHole = (1 === currentNine ? getHoleID(selectedCourse, 1) : getHoleID(selectedCourse, 10)); index < length; ++index, ++cellHole) {
-		$('#wholeCourseTbl tbody').append('<td>');
+	var rowHTML = '<tr><td class="playerLbl">' + result.rows.item(0).Name + '</td>';
+	
+	for(var cellHole = (1 === currentNine ? getHoleID(selectedCourse, 1) : getHoleID(selectedCourse, 10)),
+			maxHole = (1 === currentNine ? getHoleID(selectedCourse, 9) : getHoleID(selectedCourse, 18));
+			cellHole <= maxHole;
+			++cellHole) {
+		rowHTML += '<td>'+cellHole;
 		
-		if (result.rows.item(index).HoleID === cellHole) {
-			$('#wholeCourseTbl tbody').append(''+result.rows.item(index).Score);
-		}
-		
-		$('#wholeCourseTbl tbody').append('</td>');
+		rowHTML += '</td>';
 	}
 	
-	$('#wholeCourseTbl tbody').append('</tr>');
+	rowHTML += '<td class="totalLbl"></td></tr>';
+	$('#wholeCourseTbl tbody').append(rowHTML);
 }
 
 
