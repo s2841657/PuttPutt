@@ -302,33 +302,40 @@ function displayPerHoleScores(tx) {
 			}, errorCB);
 }
 
-function bleh(tx, result, words){alert(words);}
+
 
 function displayPerHoleTotal(tx) {
 	tx.executeSql('SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name', [], function(tx, result) {
-		var rowIndex;
-		var qryLength = result.rows.length;
-
-		var tblRows = $('#perHoleTbl tbody tr');
-		var players = tblRows.find('.playerLbl');
-		var playerLength = players.length;
-
-		for (var i=0; i < qryLength; ++i) {
-			rowIndex = -1;
-
-			for (var j=0; j < playerLength; ++j) {
-				if (players.eq(j).text() === result.rows.item(i).Name) {
-					rowIndex = j;
-					break;
-				}
-			}
-
-			if (-1 != rowIndex) {
-				tblRows.eq(rowIndex).find('.totalLbl').text(result.rows.item(i).Total);
-			}
-		}
+		displayTotal(result, '#perHoleTbl', '.playerLbl', '.totalLbl');
 	}, errorCB);
 }
+
+
+
+function displayTotal(qryResult, tableName, playerLbl, totalLbl) {	
+	var rowIndex;
+	var qryLength = qryResult.rows.length;
+
+	var tblRows = $(tableName + ' tbody tr');
+	var players = tblRows.find(playerLbl);
+	var playerLength = players.length;
+
+	for (var i=0; i < qryLength; ++i) {
+		rowIndex = -1;
+
+		for (var j=0; j < playerLength; ++j) {
+			if (players.eq(j).text() === qryResult.rows.item(i).Name) {
+				rowIndex = j;
+				break;
+			}
+		}
+
+		if (-1 != rowIndex) {
+			tblRows.eq(rowIndex).find(totalLbl).text(qryResult.rows.item(i).Total);
+		}
+	}	
+}
+
 
 
 function createNewScorecard(tx) {
@@ -561,27 +568,7 @@ function displayWholeCoursePlayerScore(tx, result) {
 
 function displayWholeCourseTotals(tx) {
 	tx.executeSql("SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name", [], function(tx, result){
-		var rowIndex;
-		var qryLength = result.rows.length;
-
-		var tblRows = $('#wholeCourseTbl tbody tr');
-		var players = tblRows.find('.playerLbl');
-		var playerLength = players.length;
-
-		for (var i=0; i < qryLength; ++i) {
-			rowIndex = -1;
-
-			for (var j=0; j < playerLength; ++j) {
-				if (players.eq(j).text() === result.rows.item(i).Name) {
-					rowIndex = j;
-					break;
-				}
-			}
-
-			if (-1 != rowIndex) {
-				tblRows.eq(rowIndex).find('.totalLbl').text(result.rows.item(i).Total);
-			}
-		}
+		displayTotal(result, '#wholeCourseTbl', '.playerLbl', '.totalLbl');
 	}, errorCB);
 }
 
