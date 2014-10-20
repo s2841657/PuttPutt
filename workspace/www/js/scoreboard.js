@@ -214,14 +214,39 @@ $('#perHoleTbl').on('input propertychange paste', function() {
 
 
 $('#prevHole').click(function() {
-	updatePerHolePage(currentHole-1);
+	if (validatePerHoleInput()) {
+		updatePerHolePage(currentHole-1);
+	}
 });
 
 
 
 $('#nextHole').click(function() {
-	updatePerHolePage(currentHole+1);
+	if (validatePerHoleInput()) {
+		updatePerHolePage(currentHole+1);
+	}
 });
+
+
+
+function validatePerHoleInput() {
+	var isValid = true;
+	
+	for (var i = 0, input, score, length = $('.scoreInput').length; i < length; ++i) {
+		input = $('.scoreInput').eq(i).val();
+		score = parseInt((input ? input : 0));
+		
+		if (isNaN(score) || score < 0 || score > 7) {
+			isValid = false;
+		}
+	}
+	
+	if (!isValid) {
+		isValid = confirm('Your scores should be between 1 and 6! Invalid scores will be ignored.\nDo you want to continue?');
+	}
+	
+	return isValid;
+}
 
 
 
