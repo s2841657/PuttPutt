@@ -26,8 +26,8 @@
 
 		var shareURLs = {
 			'twitter' : 'https://twitter.com/intent/tweet?url=' + url_encoded,
-			'facebook' : 'https://facebook.com/sharer.php?u=https://www.facebook.com/puttputtgolfmermaidbeach/timeline' + url_encoded,
-			'googlePlus' : 'https://plus.google.com/share?url=https://plus.google.com/116178203331725561380/about?hl=en' + url_encoded,
+			'facebook' : 'https://facebook.com/sharer.php?u=' + url_encoded,
+			'googlePlus' : 'https://plus.google.com/share?url=' + url_encoded,
 			'tumblr' : 'http://www.tumblr.com/share/link?url=' + url_encoded,
 			'pinterest': 'https://pinterest.com/pin/create/button?url=' + url_encoded
 		};

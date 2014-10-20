@@ -197,7 +197,7 @@ function addPlayersToScorecard() {
 	$.each(playerNames, function(index, value) {
 		$('#perHoleTbl tbody').append('<tr><td><div class="playerLbl">' +
 				value +
-				'</div></td><td><input type="text" class="scoreInput" /></td>' +
+				'</div></td><td class="score"><input type="tel" class="scoreInput" /></td>' +
 				'<td><div class="totalLbl"></div></td></tr>');
 	});
 }
@@ -279,28 +279,26 @@ function displayCurrentHole() {
 
 // Display the score on the per-hole table
 function displayPerHoleScores(tx) {
-	// alert('displayPerHoleScores current_hole:' + currentHole);
-		var holeID = getHoleID(selectedCourse, currentHole);
-		//alert("Current hole " + current_hole);
-		tx.executeSql('SELECT Name, Score, HoleID FROM Scorecard WHERE HoleID='+holeID, [],
+	var holeID = getHoleID(selectedCourse, currentHole);
+
+	tx.executeSql('SELECT Name, Score, HoleID FROM Scorecard WHERE HoleID='+holeID, [],
 			function(tx, result) {
 				var rowIndex;
-		        var len = result.rows.length;
-		        var tblRows = $('#perHoleTbl tbody tr');
-		        for (var i=0; i<len; i++){
-		        	rowIndex = -1;
-		        	var players = $('.playerLbl');
-		        	for(var j = 0; j < players.length; j++) {
-		        		if($('.playerLbl').eq(j).text() === result.rows.item(i).Name) {
-		        			rowIndex = j;
-		        			break;
-		        		}
-		        	}
-		        
-					if (rowIndex != -1) {
+				var len = result.rows.length;
+				var tblRows = $('#perHoleTbl tbody tr');
+				for (var i=0; i<len; ++i){
+					rowIndex = -1;
+					for(var j = 0, players = $('.playerLbl'); j < players.length; ++j) {
+						if(players.eq(j).text() === result.rows.item(i).Name) {
+							rowIndex = j;
+							break;
+						}
+					}
+					
+					if (rowIndex != -1 && result.rows.item(i).Score) {
 						tblRows.eq(rowIndex).find('.scoreInput').val(result.rows.item(i).Score);
 					}
-		        }
+				}
 			}, errorCB);
 }
 
@@ -360,6 +358,7 @@ function populateNewScorecard(tx) {
 
 function saveCurrentHole(tx) {
 	var holeID = getHoleID(selectedCourse, currentHole);
+	var isValid = true;
 	
 	$('#perHoleTbl tbody tr').each(function(index, value) {
 		var name = $(this).find("td").eq(0).text();
@@ -378,8 +377,6 @@ function saveCurrentHole(tx) {
 $('#holeInfo').click(function() {
 	var imgLocation = 'img/hole/' + getHoleID(selectedCourse, currentHole) + '.gif';
 	$('#holeOverlayImg').html('<img src="'+ imgLocation +'"></img>');
-	
-	$('#crazyGolfLbl').text(getCrazyGolfText());
 	
 	holeInOneVisible(true);
 });
@@ -433,6 +430,7 @@ $('#resetLeaderboardBtn').click(function() {
 });
 
 
+
 // Display the high scores for each course
 $('.leaderboardBtn').click(function() {
 	var temp;
@@ -473,14 +471,14 @@ function displayLeaderboardPage(tx) {
 
 
 $('#roundCompleteLeaderboardBtn').click(function(){
-	leaderboardCourse = temp;
+	leaderboardCourse = selectedCourse;
+	
+	window.location = '#leaderboardsPage';
+	
 	// Clear the table
 	$('#leaderboardTbl tbody').empty();
-
 	// Get the high scores from the database
-	database.transaction(displayLeaderboardPage, errorCB, function(){
-		window.location = '#leaderboardsPage';
-	}); 
+	database.transaction(displayLeaderboardPage, errorCB); 
 });
 
 
@@ -626,72 +624,6 @@ function courseFromholeID(id) {
 		course = null;
 	}
 	return course;
-}
-
-
-
-function getCrazyGolfText() {
-	var text;
-	switch(currentHole) {
-		case 1:
-			text = 'Play this hole right handed';
-			break;
-		case 2:
-			text = 'Use your right foot to putt the ball';
-			break;
-		case 3:
-			text = 'Putt facing backwards through your legs';
-			break;
-		case 4:
-			text = 'Putt one handed using only your right hand';
-			break;
-		case 5:
-			text = 'Play this hole like a snooker shot';
-			break;
-		case 6:
-			text = 'Play this hole left handed';
-			break;
-		case 7:
-			text = 'Pick up your ball and bowl your first shot';
-			break;
-		case 8:
-			text = 'Close your eyes for your first shot. Every miss counts!';
-			break;
-		case 9:
-			text = 'Play hockey, if your ball leaves your putter that is 1 shot';
-			break;
-		case 10:
-			text = 'Play this hole with your putter turned backwards';
-			break;
-		case 11:
-			text = 'Stand on 1 leg for all shots';
-			break;
-		case 12:
-			text = 'Your ball cannot stop rolling. Count 1 shot every hit';
-			break;
-		case 13:
-			text = 'Play this hole right handed';
-			break;
-		case 14:
-			text = 'Everyone putts their first shot then swap balls to continue playing this hole';
-			break;
-		case 15:
-			text = 'Make up your own (make sure it\'s crazy!)';
-			break;
-		case 16:
-			text = 'Each shot must rebound off a bump board (1 stroke penalty)';
-			break;
-		case 17:
-			text = 'Putt one handed using only your left hand';
-			break;
-		case 18:
-			text = 'Everyone putts their first shot. Closest ball to the hole without going in wins a special prize';
-			break;
-		default:
-			text = '';
-			break;
-	}
-	return text;
 }
 
 

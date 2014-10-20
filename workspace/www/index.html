@@ -53,6 +53,7 @@ Updated contributors
         
 		
 		<div id="homePage" data-role="page">
+			<div class="topBG"></div>
 			<div class="container">
 				<img src="img/logo.png" alt="" id="homeLogo" />
 
@@ -119,12 +120,12 @@ Updated contributors
 			</div>
 			
 			<div id="holeDiv">
-				<table id="perHoleTbl" class="score">
+				<table id="perHoleTbl">
 					<thead>
 						<tr>
-						<th>Name</th>
-						<th>Score</th>
-						<th>Total</th>
+						<th class="name">Name</th>
+						<th class="score">Score</th>
+						<th class="total">Total</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -196,7 +197,7 @@ Updated contributors
                 <a data-role="button" data-icon="star" data-theme="a" class="leaderboardBtn">Fun Run</a>
                 <a data-role="button" data-icon="star" data-theme="b" class="leaderboardBtn">Jungle Trail</a>
                 <a data-role="button" data-icon="star" data-theme="d" class="leaderboardBtn">Waterways Cove</a>
-                <table id="leaderboardTbl" class="score">
+                <table id="leaderboardTbl">
                     <thead>
                         <tr>
                             <td style="width: 25%">#</td>
@@ -251,7 +252,7 @@ Updated contributors
 				<a data-icon="gear" data-iconpos="notext" href="#settingsPage"></a>
 			</div>
 			<div data-role="content">
-				<table id="roundCompleteTbl" class="score">
+				<table id="roundCompleteTbl">
 					<thead>
 						<tr>
 							<th style="width: 20%">#</th>
@@ -266,7 +267,7 @@ Updated contributors
 				
 				<!--<a data-role="button" data-icon="star" data-theme="d">Share to Social Media</a>-->
 				<a data-role="button" data-icon="star" data-theme="b" id="roundCompleteScorecardBtn" href="#wholeCoursePage">View Full Scorecard</a>
-				<a data-role="button" data-icon="star" data-theme="a" id="roundCompleteLeaderboardBtn">View Leaderboards</a>
+				<a data-role="button" data-icon="star" data-theme="a" id="roundCompleteLeaderboardBtn" href="#leaderboardsPage">View Leaderboards</a>
 				<a data-role="button" data-icon="star" data-theme="d" id="feedbackBtn" href="#feedback">Give Feedback</a>
 				<a data-role="button" data-icon="back" data-theme="c" href="#setupPage1">Play Again</a>
 			</div>
@@ -294,7 +295,7 @@ Updated contributors
 						
 						<!-- Customr Mobile-->
 						<label>Mobile</label>
-						<input type="number" id="mobile" name="mobile" type="text" placeholder="Enter your mobile number here" required="" />
+						<input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number here" />
 					</fieldset>
 					
 					

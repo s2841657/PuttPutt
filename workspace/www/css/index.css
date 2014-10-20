@@ -187,7 +187,7 @@ a.ui-btn, .ui-btn.ui-btn-b, .ui-btn.ui-btn-a {
 }
 
 #homePage, #setupPage1, #setupPage2, #settingsPage, #contactUs, #leaderboardsPage, #socialtest {
-    height: 100vh;
+    /* height: 100vh; */
     overflow: hidden;
 }
 
@@ -229,7 +229,7 @@ img {
     margin: 20vh auto;
 }
 .addplayers {
-    margin: 10vh auto;
+    margin: 10vh auto 0 auto;
 }
 .addplayers input {
     font-size: 1.5em;
@@ -269,6 +269,15 @@ table tbody {
 .header a {
     margin-top: 3vh !important;
 }
+.ui-header {
+    border: none;
+}
+.topBG {
+    background: #cd2c24;
+    height: 16pt;
+    width: 100%;
+    position: fixed;
+}
 
 
 
@@ -277,6 +286,27 @@ table tbody {
 /* scoreboard */
 .scoreInput {
     width: 100%;
+    text-align: center !important;
+    border: 1px solid #ddd;
+}
+#perHoleTbl .name {
+    width: 50%;
+}
+#perHoleTbl .score {
+    width: 30%;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 3px 10%;
+}
+#perHoleTbl .total {
+    width: 20%;
+}
+#perHoleTbl thead {
+    border-bottom: 1px solid #ddd;
+}
+#perHoleTbl {
+    margin: 10vh auto;
+    width: 90%;
 }
 
 
@@ -541,6 +571,12 @@ h5 {
 
 #holeOverlay {
 	display: none;
+}
+
+#holeOverlayImg img {
+    height: 74vh;
+    margin: 8vh auto;
+    width: auto;
 }
 
 #crazyGolfDiv {

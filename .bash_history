@@ -184,3 +184,6 @@ git push origin master
 git add .
 git commit -m "minor changes"
 git push origin master
+git add .
+git commit -m "End game screen added"
+git push origin master
