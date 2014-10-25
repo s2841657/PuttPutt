@@ -571,23 +571,7 @@ h5 {
 
 #holeOverlay {
 	display: none;
-}
-
-#holeOverlayImg img {
     height: 74vh;
     margin: 8vh auto;
     width: auto;
-}
-
-#crazyGolfDiv {
-	margin: 7% 7%;
-}
-
-#crazyGolfImg {
-	float: left;
-	width: 30%;
-}
-
-#crazyGolfLbl {
-	text-align: center;
 }

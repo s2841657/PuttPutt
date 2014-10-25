@@ -187,3 +187,12 @@ git push origin master
 git add .
 git commit -m "End game screen added"
 git push origin master
+git add .
+git commit -m "don't display zero-scores"
+git push origin master
+git add .
+git commit -m "added/edited some stuff"
+git push origin master
+git add .
+git commit -m "added input validation to per hole scores"
+git push origin master

@@ -1,34 +1,33 @@
-/*
-	It is generally bad design to hardcode certain things like the holeID and COURSES, but I wanted to avoid having to create a table with static values, then having to also implement foreign keys. This may become an issue if more courses or holes are added.
-*/
-
 // A list of courses
 var COURSES = {
 	FUNRUN : { value:100, name:'Fun Run', code:'FunRun' },
 	JUNGLETRAIL : { value:200, name:'Jungle Trail', code:'JungleTrail' },
 	WATERWAYSCOVE : { value: 300, name:'Waterways Cove', code:'WaterwaysCove' }
 };
-// The course which is being played (eg: COURSES.FUNRUN)
-var selectedCourse;
 // The course which is being viewed in the leaderboard
 var leaderboardCourse;
+// The course which is being played (eg: COURSES.FUNRUN)
+var selectedCourse;
 
+// The id of the hole which is being played
 var currentHole;
 // This is the unique id of each hole
 function getHoleID(course, hole) {
 	return course.value + hole;
 }
-// This will hold a value 1 or 2 for front- and back-nine respectively
+// 1 or 2 for front- and back-nine respectively
 var currentNine;
-
-var playerNames = [];
 
 // Whether a score has been edited (and needs saving)
 var wasEdited;
 
+// The players on the scorecard
+var playerNames = [];
+
 // Whether the user has opted to continue an existing game or start a new one
 var willContinue;
-// This will hold the database
+
+// This is the database for the scorecard and leaderboard
 var database;
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -47,6 +46,7 @@ function onDeviceReady() {
 
 
 
+// The leaderboard button on the home page is clicked
 $('#homeLeaderboardBtn').click(function(){
 	if (window.openDatabase) {
 		// Reset the leaderboard table
@@ -60,12 +60,7 @@ $('#homeLeaderboardBtn').click(function(){
 
 
 
-/*
-	The leaderboard should be empty until a course is selected.
-	The button on the home page will clear it,
-	and the end game screen will display the current course.
-	Settings are the only other external link on or to this page.
-*/
+// Refresh the leaderboard page when navigating away
 $('#leaderboardSettings').click(function(){
 	// Clear the table
 	leaderboardCourse = null;
@@ -80,6 +75,7 @@ $('#homePlayBtn').click(function() {
 		// Load an existing game
 		database.transaction(inProgressQuery, errorCB, function() {
 			if (willContinue) {
+				// Display the loaded scorecard
 				database.transaction(setupExistingScorecard, errorCB);
 				updatePerHolePage(currentHole=1);
 				window.location = '#perHolePage';
@@ -135,6 +131,7 @@ $('#setupPlayBtn').click(function() {
 
 
 
+// Add each player to the scorecard
 function setupNewScorecard() {
 	playerNames = getUniqueNames();
 	
@@ -151,13 +148,14 @@ function getUniqueNames() {
 	var index = 0;
 	
 	var name;
+	// Iterate through each player's name input
 	$('.playerName').each(function() {
 		
 		name = $(this).val();
 		if (name && name.length > 0) {
 			
 			if (players.length == 0) {
-				// Clear the table
+				// We can be certain the first name is unique
 				players[index++] = name;
 				
 			// Add unique player names to the scorecard
@@ -172,6 +170,7 @@ function getUniqueNames() {
 
 
 
+// Load a scorecard from the database
 function setupExistingScorecard(tx) {
 	tx.executeSql('SELECT DISTINCT Name FROM Scorecard', [], 
 			function(tx, result) {
@@ -189,10 +188,13 @@ function setupExistingScorecard(tx) {
 
 
 
+// Display players on the scorecard
 function addPlayersToScorecard() {
 	if (playerNames.length > 0) {
+		// Clear the scorecard table
 		$('#perHoleTbl tbody').empty();
 	}
+	
 	// Add each player to the scorecard
 	$.each(playerNames, function(index, value) {
 		$('#perHoleTbl tbody').append('<tr><td><div class="playerLbl">' +
@@ -213,6 +215,7 @@ $('#perHoleTbl').on('input propertychange paste', function() {
 
 
 
+// Display the previous hole
 $('#prevHole').click(function() {
 	if (validatePerHoleInput()) {
 		updatePerHolePage(currentHole-1);
@@ -221,6 +224,7 @@ $('#prevHole').click(function() {
 
 
 
+// Display the next hole
 $('#nextHole').click(function() {
 	if (validatePerHoleInput()) {
 		updatePerHolePage(currentHole+1);
@@ -229,11 +233,15 @@ $('#nextHole').click(function() {
 
 
 
+// Make sure only valid scores have been entered
 function validatePerHoleInput() {
 	var isValid = true;
 	
-	for (var i = 0, input, score, length = $('.scoreInput').length; i < length; ++i) {
+	// Iterate through each score
+	for (var i = 0, score, length = $('.scoreInput').length; i < length; ++i) {
+		// Parse each input field to an integer
 		input = $('.scoreInput').eq(i).val();
+		// Empty fields are zero
 		score = parseInt((input ? input : 0));
 		
 		if (isNaN(score) || score < 0 || score > 7) {
@@ -241,7 +249,9 @@ function validatePerHoleInput() {
 		}
 	}
 	
+	// If a score hasn't been entered correctly
 	if (!isValid) {
+		// Ask whether that score should be ignored
 		isValid = confirm('Your scores should be between 1 and 6! Invalid scores will be ignored.\nDo you want to continue?');
 	}
 	
@@ -250,16 +260,18 @@ function validatePerHoleInput() {
 
 
 
+// Save any scores then display another hole
 function updatePerHolePage(hole) {
-	holeInOneVisible(false);
+	// An error has occured as the scorecard has been cleared
 	if(!$('#perHoleTbl tbody tr').length) {
 		window.location = '#homePage';
 	}
 	
 	if (wasEdited) {
+		// Save the new scores to the database
 		database.transaction(saveCurrentHole, errorCB, function() {
 			wasEdited = false;
-			currentNine = null;
+			// Refresh the total
 			database.transaction(displayPerHoleTotal, errorCB, function() {
 				updatePerHolePage(hole);
 			});
@@ -269,6 +281,7 @@ function updatePerHolePage(hole) {
 	
 	var willUpdate = false;
 	
+	// Ensure the hole is within bounds
 	if (!hole || hole < 1) {
 		willUpdate = ((hole = 1) != currentHole);
 	} else if (hole > 18) {
@@ -276,9 +289,9 @@ function updatePerHolePage(hole) {
 			database.transaction(updateLeaderboard, errorCB, function(){
 				window.location = "#roundCompletePage";
 			});
+		} else {
+			hole = 18;
 		}
-		
-		hole = 18;
 	} else {
 		willUpdate = true;
 	}
@@ -329,6 +342,7 @@ function displayPerHoleScores(tx) {
 
 
 
+// Display each player's total
 function displayPerHoleTotal(tx) {
 	tx.executeSql('SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name', [], function(tx, result) {
 		displayTotal(result, '#perHoleTbl', '.playerLbl', '.totalLbl');
@@ -337,10 +351,12 @@ function displayPerHoleTotal(tx) {
 
 
 
+// Find the appropriate player for each total
 function displayTotal(qryResult, tableName, playerLbl, totalLbl) {	
 	var rowIndex;
 	var qryLength = qryResult.rows.length;
 
+	// Get each player from the table
 	var tblRows = $(tableName + ' tbody tr');
 	var players = tblRows.find(playerLbl);
 	var playerLength = players.length;
@@ -349,12 +365,14 @@ function displayTotal(qryResult, tableName, playerLbl, totalLbl) {
 		rowIndex = -1;
 
 		for (var j=0; j < playerLength; ++j) {
+			// Find the player's score
 			if (players.eq(j).text() === qryResult.rows.item(i).Name) {
 				rowIndex = j;
 				break;
 			}
 		}
 
+		// Display the player's score
 		if (-1 != rowIndex) {
 			tblRows.eq(rowIndex).find(totalLbl).text(qryResult.rows.item(i).Total);
 		}
@@ -363,6 +381,7 @@ function displayTotal(qryResult, tableName, playerLbl, totalLbl) {
 
 
 
+// Create a new, empty scorecard
 function createNewScorecard(tx) {
 	tx.executeSql('DROP TABLE IF EXISTS Scorecard', [], null, errorCB);
 	tx.executeSql('CREATE TABLE IF NOT EXISTS Scorecard (HoleID INTEGER NOT NULL, Name TEXT NOT NULL, Score INTEGER, PRIMARY KEY (HoleID, Name))', [], null, errorCB);
@@ -370,6 +389,7 @@ function createNewScorecard(tx) {
 
 
 
+// Initialize the new scorecard with default scores (zero)
 function populateNewScorecard(tx) {
 	for (var currentHole = getHoleID(selectedCourse, 1), maxHole = getHoleID(selectedCourse, 18);
 			currentHole <= maxHole; ++currentHole) {
@@ -381,25 +401,25 @@ function populateNewScorecard(tx) {
 
 
 
+// Save the scores for the current hole of the scorecard
 function saveCurrentHole(tx) {
 	var holeID = getHoleID(selectedCourse, currentHole);
-	var isValid = true;
 	
 	$('#perHoleTbl tbody tr').each(function(index, value) {
-		var name = $(this).find("td").eq(0).text();
-		var score = parseInt($(this).find("td").eq(1).find("input").val());
+		var name = $(this).find('.playerLbl').eq(0).text();
+		var score = parseInt($(this).find('td input').eq(0).val());
 		
+		// Insert valid scores into the database
 		if (!isNaN(score) && !(score < 0 || score > 7)) {
 			tx.executeSql('INSERT OR REPLACE INTO Scorecard (HoleID, Name, Score) VALUES ('+holeID+', "'+name+'", '+score+')', [], null, errorCB);
 		}
 	});
-
-	return;
 }
 
 
 
 $('#holeInfo').click(function() {
+	// Display the hole-in-one diagram
 	var imgLocation = 'img/hole/' + getHoleID(selectedCourse, currentHole) + '.gif';
 	$('#holeOverlayImg').html('<img src="'+ imgLocation +'"></img>');
 	
@@ -409,11 +429,13 @@ $('#holeInfo').click(function() {
 
 
 $('#holeOverlay').click(function(){
+	// Close the hole-in-one diagram on click
 	holeInOneVisible(false);
 });
 
 
 
+// Set the visibility of the hole-in-one diagram
 function holeInOneVisible(diagramVisible) {
 	if (diagramVisible) {
 		$('#holeOverlay').show();
@@ -427,13 +449,15 @@ function holeInOneVisible(diagramVisible) {
 
 
 function updateLeaderboard(tx) {
+	// Add each player to the leaderboard
 	$('#perHoleTbl tbody tr').each(function(index, value) {
-		name = $(this).find('.playerLbl').eq(0).text();
-		score = parseInt($(this).find('.totalLbl').eq(0).text());
+		var name = $(this).find('.playerLbl').eq(0).text();
+		var total = parseInt($(this).find('.totalLbl').eq(0).text());
 		
-		tx.executeSql('INSERT INTO Leaderboard (Name, Course, Score) Values ("'+name+'", "'+selectedCourse.code+'",'+score+')');
+		tx.executeSql('INSERT INTO Leaderboard (Name, Course, Score) Values ("'+name+'", "'+selectedCourse.code+'",'+total+')');
 	});
 	
+	// Keep only the high scores
 	var limitQry = 'DELETE FROM Leaderboard WHERE RowID NOT IN '+
 			'(SELECT * FROM (SELECT RowID FROM Leaderboard WHERE Course = "' + selectedCourse.code + '" ORDER BY Score ASC LIMIT 5) '+
 			'UNION SELECT RowID FROM Leaderboard WHERE Course != "' + selectedCourse.code + '")';
@@ -443,7 +467,9 @@ function updateLeaderboard(tx) {
 
 
 
+// Reset the leaderboard
 $('#resetLeaderboardBtn').click(function() {
+	// Confirm whether the user wants to clear the leaderboard
 	if (confirm('Are you sure you want to reset the leaderboards?\nThis can\'t be undone!')) {
 		database.transaction(function(tx){
 			tx.executeSql('DROP TABLE IF EXISTS Leaderboard');
@@ -472,23 +498,26 @@ $('.leaderboardBtn').click(function() {
 
 
 
+// Display the leaderboard for a course
 function displayLeaderboardPage(tx) {
-	tx.executeSql('SELECT Name, Score FROM Leaderboard WHERE Course = "'+ leaderboardCourse.code +'" ORDER BY Score', [], function(tx, result) {
-		for (var i = 0, len = result.rows.length, prevScore = 0, place = 1, currentScore; i < len; ++i) {
-			
-			currentScore = result.rows.item(i).Score;
-			if (currentScore !== prevScore) {
-				place = i+1;
-			}
-			prevScore = currentScore;
-			
-			$('#leaderboardTbl tbody').append('<tr><td>' +
-					place +
-					'</td><td>' +
-					result.rows.item(i).Name +
-					'</td><td>' +
-					currentScore +
-					'</td></tr>');
+	tx.executeSql('SELECT Name, Score FROM Leaderboard WHERE Course = "'+ leaderboardCourse.code +'" ORDER BY Score', [],
+		function(tx, result) {
+			for (var i = 0, len = result.rows.length, prevScore = 0, place = 1, currentScore; i < len; ++i) {
+		
+				// Make placing correct (two players with the same score are placed the same)
+				currentScore = result.rows.item(i).Score;
+				if (currentScore !== prevScore) {
+					place = i+1;
+				}
+				prevScore = currentScore;
+	
+				$('#leaderboardTbl tbody').append('<tr><td>' +
+						place +
+						'</td><td>' +
+						result.rows.item(i).Name +
+						'</td><td>' +
+						currentScore +
+						'</td></tr>');
 		}
 	}, errorCB);
 }
@@ -496,8 +525,8 @@ function displayLeaderboardPage(tx) {
 
 
 $('#roundCompleteLeaderboardBtn').click(function(){
+	// Display the players' place on the leaderboard
 	leaderboardCourse = selectedCourse;
-	
 	window.location = '#leaderboardsPage';
 	
 	// Clear the table
@@ -508,6 +537,7 @@ $('#roundCompleteLeaderboardBtn').click(function(){
 
 
 
+// Display the overview scorecard
 $('#roundCompleteScorecardBtn').click(function(){
 	currentNine = null;
 	displayWholeCoursePage(1);
@@ -529,12 +559,14 @@ $('#fullScorecard').click(function(){
 
 
 
+// Display the front-nine
 $('#prevNine').click(function(){
 	displayWholeCoursePage(1);
 });
 
 
 
+// Display the back-nine
 $('#nextNine').click(function(){
 	displayWholeCoursePage(2);
 });
@@ -550,6 +582,7 @@ function displayWholeCoursePage(nine) {
 		nine = 2;
 	}
 	
+	// Show the score for each hole per front/back-nine
 	if (nine !== currentNine) {
 		currentNine = nine;
 		$('#nineLbl').text(lblTxt);
@@ -564,7 +597,8 @@ function displayWholeCoursePage(nine) {
 
 
 function displayWholeCourseTable() {
-	var tblHead = '<tr><th>Name</th>'
+	// Display the overview scorecard table's header
+	var tblHead = '<tr><th>Name</th>';
 	for (var i = (currentNine === 1 ? 1 : 10); i <= currentNine * 9; ++i) {
 		tblHead += '<th>' + i + '</th>';
 	}
@@ -572,6 +606,7 @@ function displayWholeCourseTable() {
 	
 	$('#wholeCourseTbl thead').append(tblHead);
 
+	// Display the scores and totals for each player
 	database.transaction(displayWholeCourseScores, errorCB, function(){
 		database.transaction(displayWholeCourseTotals, errorCB);
 	});
@@ -582,6 +617,7 @@ function displayWholeCourseTable() {
 function displayWholeCourseScores(tx) {
 	var qry;
 	$.each(playerNames, function(index, value){
+		// Retrieve all scores for the front/back-nine for each player in turn
 		qry = 'SELECT Name, Score FROM Scorecard WHERE Name = "' + value + '" AND HoleID';
 		
 		if (1 === currentNine) {
@@ -598,12 +634,14 @@ function displayWholeCourseScores(tx) {
 
 
 function displayWholeCoursePlayerScore(tx, result) {
+	// Display the scores for a particular player
 	var rowHTML = '<tr><td class="playerLbl">' + result.rows.item(0).Name + '</td>';
 	
 	for(var index = 0, length = result.rows.length; index < length;	++index) {
 		rowHTML += '<td>' + result.rows.item(index).Score + '</td>';
 	}
 	
+	// Create a field for the total
 	rowHTML += '<td class="totalLbl"></td></tr>';
 	
 	$('#wholeCourseTbl tbody').append(rowHTML);
@@ -611,6 +649,7 @@ function displayWholeCoursePlayerScore(tx, result) {
 
 
 
+// Display the total for each player on the wholeCourse scorecard
 function displayWholeCourseTotals(tx) {
 	tx.executeSql('SELECT Name, SUM(Score) AS Total FROM Scorecard GROUP BY Name', [], function(tx, result){
 		displayTotal(result, '#wholeCourseTbl', '.playerLbl', '.totalLbl');
@@ -619,6 +658,7 @@ function displayWholeCourseTotals(tx) {
 
 
 
+// Retrieve a course's details from its name
 function courseFromName(name) {
 	var course;
 	switch (name) {
@@ -637,6 +677,7 @@ function courseFromName(name) {
 
 
 
+// Retrieve a courses details from a particular hole id
 function courseFromholeID(id) {
 	var course;
 	if (id > 300) {
@@ -655,11 +696,9 @@ function courseFromholeID(id) {
 
 // Database transaction error callback
 function errorCB(tx, err) {
-	alert('Error processing SQL - Code: '+err.code);
-	
 	// If a console is available
 	if (window.console && window.console.log) {
 		// log the error to it
-		console.log('Error processing SQL: '+err);
+		console.log('Error processing SQL - Code: '+err.code);
 	}
 }
